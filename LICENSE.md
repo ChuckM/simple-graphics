@@ -1,10 +1,12 @@
 Creative Commons Attribution 4.0 International Public License
 --------------------------------------------------------------
 
-The defining specification for this license can be found
-[here][http://creativecommons.org/licenses/by/4.0/legalcode] this
-copy is provided as a convienience. In the event of any differences
-or discrepancies, the referenced URL shall take precedence.
+The defining specification for this [license][here] can be found
+on the creative commons web site. A copy is provided as a 
+convienience. In the event of any differences or discrepancies, 
+the referenced URL shall take precedence.
+
+[here]: http://creativecommons.org/licenses/by/4.0/legalcode]
 
 By exercising the Licensed Rights (defined below), You accept and agree to
 be bound by the terms and conditions of this Creative Commons Attribution
@@ -88,14 +90,14 @@ available under these terms and conditions.
 
        B. produce, reproduce, and Share Adapted Material.
 
-    2.  _Exceptions and Limitations._ For the avoidance of doubt, where
+    2. Exceptions and Limitations. For the avoidance of doubt, where
        Exceptions and Limitations apply to Your use, this Public License
        does not apply, and You do not need to comply with its terms
        and conditions.
 
-    3. _Term._ The term of this Public License is specified in Section 6(a).
+    3. Term. The term of this Public License is specified in Section 6(a).
 
-    4. _Media and formats; technical modifications allowed._ The Licensor 
+    4. Media and formats; technical modifications allowed. The Licensor 
 	  authorizes You to exercise the Licensed Rights in all media
 	  and formats whether now known or hereafter created, and to make
 	  technical modifications necessary to do so. The Licensor waives
@@ -106,7 +108,7 @@ available under these terms and conditions.
 	  of this Public License, simply making modifications authorized
 	  by this Section _2(a)(4)_ never produces Adapted Material.
 
-    5. _Downstream recipients._
+    5. Downstream recipients.
 
       A. Offer from the Licensor – Licensed Material. Every recipient of 
          the Licensed Material automatically receives an offer from the
@@ -119,7 +121,7 @@ available under these terms and conditions.
 		 Material if doing so restricts exercise of the Licensed
 		 Rights by any recipient of the Licensed Material.
 
-    6. _No endorsement._ Nothing in this Public License constitutes or may 
+    6. No endorsement. Nothing in this Public License constitutes or may 
       be construed as permission to assert or imply that You are, or
       that Your use of the Licensed Material is, connected with, or
       sponsored, endorsed, or granted official status by, the Licensor
@@ -147,38 +149,46 @@ available under these terms and conditions.
 
 ## Section 3 – License Conditions. ##
 
-Your exercise of the Licensed Rights is expressly made subject to the following conditions.
+Your exercise of the Licensed Rights is expressly made subject to the 
+following conditions.
 
   a. **Attribution.**
 
-    1. If You Share the Licensed Material (including in modified form), You must:
+    1. If You Share the Licensed Material (including in modified form), 
+       You must:
 
-      A. retain the following if it is supplied by the Licensor with the Licensed Material:
+       A. retain the following if it is supplied by the Licensor with 
+          the Licensed Material:
 
-        i.  identification of the creator(s) of the Licensed Material and any others 
-designated to receive attribution, in any reasonable manner requested by the Licensor 
-(including by pseudonym if designated);
-        ii. a copyright notice;
+          i. identification of the creator(s) of the Licensed Material and
+             any others designated to receive attribution, in any reasonable
+             manner requested by the Licensor (including by pseudonym if 
+             designated);
+	     ii. a copyright notice;
         iii. a notice that refers to this Public License;
-        iv. a notice that refers to the disclaimer of warranties;
-        v.  a URI or hyperlink to the Licensed Material to the extent reasonably practicable;
+         iv. a notice that refers to the disclaimer of warranties;
+          v. a URI or hyperlink to the Licensed Material to the extent 
+             reasonably practicable;
 
-      B. indicate if You modified the Licensed Material and retain an indication of any 
-previous modifications; and
+       B. indicate if You modified the Licensed Material and retain an 
+          indication of any previous modifications; and
 
-      C. indicate the Licensed Material is licensed under this Public License, and include
-the text of, or the URI or hyperlink to, this Public License.
+       C. indicate the Licensed Material is licensed under this Public 
+          License, and include the text of, or the URI or hyperlink to, 
+          this Public License.
 
-    2. You may satisfy the conditions in Section _3(a)(1)_ in any reasonable manner 
-based on the medium, means, and context in which You Share the Licensed Material. 
-For example, it may be reasonable to satisfy the conditions by providing a URI or 
-hyperlink to a resource that includes the required information.
+    2. You may satisfy the conditions in Section _3(a)(1)_ in any reasonable 
+       manner based on the medium, means, and context in which You Share the 
+       Licensed Material.  For example, it may be reasonable to satisfy the 
+       conditions by providing a URI or hyperlink to a resource that includes
+       the required information.
 
-    3. If requested by the Licensor, You must remove any of the information required 
-by Section 3(a)(1)(A) to the extent reasonably practicable.
+    3. If requested by the Licensor, You must remove any of the information 
+       required by Section 3(a)(1)(A) to the extent reasonably practicable.
 
-    4. If You Share Adapted Material You produce, the Adapter's License You apply must 
-not prevent recipients of the Adapted Material from complying with this Public License.
+    4. If You Share Adapted Material You produce, the Adapter's License 
+       You apply must not prevent recipients of the Adapted Material from 
+       complying with this Public License.
 
 ## Section 4 – Sui Generis Database Rights. ##
 
@@ -232,9 +242,9 @@ include other Copyright and Similar Rights.
 ## Section 6 – Term and Termination. ##
 
     a. This Public License applies for the term of the Copyright and
-    Similar Rights licensed here. However, if You fail to comply with
-    this Public License, then Your rights under this Public License
-    terminate automatically.
+       Similar Rights licensed here. However, if You fail to comply with
+       this Public License, then Your rights under this Public License
+       terminate automatically.
 
     b. Where Your right to use the Licensed Material has terminated 
        under Section _6(a)_, it reinstates:
