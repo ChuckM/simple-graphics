@@ -6,7 +6,7 @@ on the creative commons web site. A copy is provided as a
 convienience. In the event of any differences or discrepancies, 
 the referenced URL shall take precedence.
 
-[here]: http://creativecommons.org/licenses/by/4.0/legalcode]
+[here]: http://creativecommons.org/licenses/by/4.0/legalcode/
 
 By exercising the Licensed Rights (defined below), You accept and agree to
 be bound by the terms and conditions of this Creative Commons Attribution
