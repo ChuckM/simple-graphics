@@ -10,8 +10,20 @@
 # Generic Makefile for the graphics code
 #
 
-CC= gcc
-AR= ar
+#
+# To just build generically uncomment out these
+#
+#CC= gcc
+#AR= ar
+
+#
+# To build for a Cortex M4 target uncomment these
+#
+CC=arm-none-eabi-gcc
+AR=arm-none-eabi-ar
+CFLAGS= -Os -g -I./include 
+CFLAGS += -mthumb -mcpu=cortex-m4 
+CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 
 all: lib/libgfx.a
 

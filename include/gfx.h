@@ -71,8 +71,6 @@ int gfx_write(unsigned char );
 
 int gfx_height(void);
 int gfx_width(void);
-int gfx_getTextHeight(void);
-int gfx_getTextWidth(void);
 enum gfx_rotate gfx_getTextRotation(void);
 void gfx_setTextRotation(enum gfx_rotate);
 
