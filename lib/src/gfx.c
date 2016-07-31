@@ -23,6 +23,7 @@
  */
 
 #include <stdint.h>
+#include <stdlib.h>
 #include "gfx.h"
 
 extern struct gfx_font small_font;
@@ -298,9 +299,8 @@ void gfx_drawLine(int x0, int y0, int x1, int y1, uint16_t color) {
  */
 void
 gfx_drawFastVLine(int x, int y, int h, uint16_t color) {
-	int i;
-	for (i = 0; i < h; i++) {
-		gfx_drawPixel(x, y+i, color);
+	while (h--) {
+		gfx_drawPixel(x, y++, color);
 	}
 }
 
@@ -309,9 +309,8 @@ gfx_drawFastVLine(int x, int y, int h, uint16_t color) {
  */
 void
 gfx_drawFastHLine(int x, int y, int w, uint16_t color) {
-	int i;
-	for (i = 0; i < w; i++) {
-		gfx_drawPixel(x + i, y, color);
+	while (w--) {
+		gfx_drawPixel(x++, y, color);
 	}
 }
 
