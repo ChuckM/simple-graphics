@@ -412,8 +412,14 @@ gfx_fillTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint16_t color)
 	 * third vertex.
 	 * NB: This can overflow if you're using a "big" space (larger
  	 *     than 64K x 64K points.
+	 *
+	 * u1 = (x1 - x0), (y1 - y0), (z1 - z0)
+	 * u2 = (x2 - x0), (y2 - y0), (z2 - z0)
+	 * Compute the Z component of u1 X u2 = (u1x * u2y) - (u1y  * u2x)
+	 *           ((x1 - x0) * (y2 - y0)) - ((y1 - y0) * (x2 - x0))
+	 *
 	 */
-	cross = (x1 - x0) * (y2 - y0) - (y1 - y0) * (x2 - y0);
+	cross = (x1 - x0) * (y2 - y0) - (y1 - y0) * (x2 - x0);
 	if (cross == 0) {
 		// they are co-linear so just draw a line
 		gfx_drawLine(min(x0, x1, x2), min(y0, y1, y2),
@@ -670,12 +676,12 @@ gfx_setTextSize(int s) {
 
 int
 gfx_getTextHeight(void) {
-	return gfx_state.font->height;
+	return gfx_state.font->height * gfx_state.text.size;
 }
 
 int
 gfx_getTextWidth(void) {
-	return gfx_state.font->width;
+	return gfx_state.font->width * gfx_state.text.size;
 }
 
 /*
@@ -805,4 +811,3 @@ int
 gfx_height(void) {
 	return gfx_state.height;
 }
-
