@@ -1,0 +1,7 @@
+obj/
+*.a
+test/basic
+test/large-font
+test/small-font
+test/rotation
+.*
