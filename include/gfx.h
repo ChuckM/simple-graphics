@@ -22,6 +22,7 @@
 #define GFX_FONT_SMALL		2
 #define GFX_TEXT_WRAP		4
 #define GFX_DISPLAY_INVERT	8
+#define GFX_FONT_TINY		0x10
 
 
 enum gfx_rotate { GFX_ROT_0, GFX_ROT_90, GFX_ROT_180, GFX_ROT_270 };

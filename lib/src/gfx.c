@@ -28,6 +28,7 @@
 
 extern struct gfx_font small_font;
 extern struct gfx_font large_font;
+extern struct gfx_font tiny_font;
 
 
 /*
@@ -124,13 +125,7 @@ gfx_init(void (*pixel_func)(int, int, uint16_t), int width, int height, int font
 	gfx_state.text.fg = 0;
 	gfx_state.text.bg = 0xFFFF;
 	gfx_state.text.rotation = GFX_ROT_0;
-	if (font_size == GFX_FONT_SMALL) {
-		gfx_state.flags = GFX_FONT_SMALL;
-		gfx_state.font = &small_font;
-	} else {
-		gfx_state.font = &large_font;
-		gfx_state.flags = GFX_FONT_LARGE;
-	}
+	gfx_setFont(font_size);
 	gfx_state.drawpixel = pixel_func;
 }
 
@@ -733,12 +728,16 @@ void
 gfx_setFont(int font) {
 	if (font == GFX_FONT_SMALL) {
 		gfx_state.font = &small_font;
-		gfx_state.flags &= ~GFX_FONT_LARGE;
+		gfx_state.flags &= ~(GFX_FONT_LARGE | GFX_FONT_TINY);
 		gfx_state.flags |= GFX_FONT_SMALL;
-	} else {
+	} else if (font == GFX_FONT_LARGE) {
 		gfx_state.font = &large_font;
-		gfx_state.flags &= ~GFX_FONT_SMALL;
+		gfx_state.flags &= ~(GFX_FONT_SMALL | GFX_FONT_TINY);
 		gfx_state.flags |= GFX_FONT_LARGE;
+	} else {
+		gfx_state.font = &tiny_font;
+		gfx_state.flags &= ~ (GFX_FONT_LARGE | GFX_FONT_SMALL);
+		gfx_state.flags |= GFX_FONT_TINY;
 	}
 }
 

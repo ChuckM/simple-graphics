@@ -13,7 +13,7 @@
 # have your X term wider than 96 characters to
 # view the results. 
 #
-TESTS= basic rotation large-font small-font triangle-fill
+TESTS= basic rotation large-font small-font triangle-fill tiny-font
 
 CFLAGS= -g -I ../include 
 LDFLAGS= -L ../lib
