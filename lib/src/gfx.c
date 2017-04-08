@@ -51,7 +51,7 @@ extern struct gfx_font tiny_font;
  * This maintains the 'state' of the graphics context
  */
 static struct {
-	void (*drawpixel)(int, int, uint16_t);	/* user supplied pixel writer */
+	void (*drawpixel)(int, int, GFX_COLOR);	/* user supplied pixel writer */
 	int16_t	disp_width, disp_height;	/* actual display dimensions */
 	int16_t width, height;			/* dimensions based on rotation */
 	struct gfx_font *font;			/* Current font in use */
@@ -59,7 +59,7 @@ static struct {
 	enum gfx_rotate rotation;		/* Display rotation */
 	struct {
 		int16_t x, y;			/* Current "cursor" X/Y location */
-		uint16_t bg, fg;		/* Background and foreground colors */
+		GFX_COLOR bg, fg;		/* Background and foreground colors */
 		int16_t size;			/* Text "size" */
 		enum gfx_rotate rotation;	/* Text rotation */
 	} text;
@@ -74,7 +74,7 @@ static struct {
  * parameters in the state structure.
  */
 void
-gfx_drawPixel(int x, int y, uint16_t color) {
+gfx_drawPixel(int x, int y, GFX_COLOR color) {
 	int	dx, dy;
 
 	if ((x < 0) || (x >= gfx_state.width) ||
@@ -115,15 +115,15 @@ gfx_drawPixel(int x, int y, uint16_t color) {
  * sets the display size.
  */
 void
-gfx_init(void (*pixel_func)(int, int, uint16_t), int width, int height, int font_size)
+gfx_init(void (*pixel_func)(int, int, GFX_COLOR), int width, int height, int font_size)
 {
 	gfx_state.width     = gfx_state.disp_width = width;
 	gfx_state.height    = gfx_state.disp_height = height;
 	gfx_state.rotation  = GFX_ROT_0;
 	gfx_state.text.y    = gfx_state.text.x = 0;
 	gfx_state.text.size  = 1;
-	gfx_state.text.fg = 0;
-	gfx_state.text.bg = 0xFFFF;
+	gfx_state.text.fg = COLOR(0, 0, 0);
+	gfx_state.text.bg = COLOR(0xff, 0xff, 0xff);
 	gfx_state.text.rotation = GFX_ROT_0;
 	gfx_setFont(font_size);
 	gfx_state.drawpixel = pixel_func;
@@ -139,7 +139,7 @@ gfx_init(void (*pixel_func)(int, int, uint16_t), int width, int height, int font
  * Calling it with 0xf (all four "slices" gets you a full circle)
  */
 void
-gfx_drawCircleHelper( int x0, int y0, int r, uint8_t slice, uint16_t color) {
+gfx_drawCircleHelper( int x0, int y0, int r, uint8_t slice, GFX_COLOR color) {
 	int f     = 1 - r;
 	int ddF_x = 1;
 	int ddF_y = -2 * r;
@@ -191,7 +191,7 @@ gfx_drawCircleHelper( int x0, int y0, int r, uint8_t slice, uint16_t color) {
  * Generate a full circle using the helper.
  */
 void
-gfx_drawCircle(int x0, int y0, int r, uint16_t color) {
+gfx_drawCircle(int x0, int y0, int r, GFX_COLOR color) {
 	gfx_drawCircleHelper(x0, y0, r, 0xf, color);
 }
 
@@ -200,7 +200,7 @@ gfx_drawCircle(int x0, int y0, int r, uint16_t color) {
  * Draw a filled circle.
  */
 void
-gfx_fillCircle(int x0, int y0, int r, uint16_t color) {
+gfx_fillCircle(int x0, int y0, int r, GFX_COLOR color) {
 	gfx_drawFastVLine(x0, y0-r, 2*r+1, color);
 	gfx_fillCircleHelper(x0, y0, r, 3, 0, color);
 }
@@ -217,7 +217,7 @@ gfx_fillCircle(int x0, int y0, int r, uint16_t color) {
  * the counter part slice on the other side of the drawing.
  */
 void
-gfx_fillCircleHelper(int x0, int y0, int r, uint8_t slice, int delta, uint16_t color) {
+gfx_fillCircleHelper(int x0, int y0, int r, uint8_t slice, int delta, GFX_COLOR color) {
 
 	int f     = 1 - r;
 	int ddF_x = 1;
@@ -250,7 +250,7 @@ gfx_fillCircleHelper(int x0, int y0, int r, uint8_t slice, int delta, uint16_t c
  * Draw a line from Point x0,y0 to x1,y1 using
  * Bresenham's algorithm.
  */
-void gfx_drawLine(int x0, int y0, int x1, int y1, uint16_t color) {
+void gfx_drawLine(int x0, int y0, int x1, int y1, GFX_COLOR color) {
 	int steep = abs(y1 - y0) > abs(x1 - x0);
 	if (steep) {
 		swap(x0, y0);
@@ -293,7 +293,7 @@ void gfx_drawLine(int x0, int y0, int x1, int y1, uint16_t color) {
  * Optimized line drawing for vertical lines.
  */
 void
-gfx_drawFastVLine(int x, int y, int h, uint16_t color) {
+gfx_drawFastVLine(int x, int y, int h, GFX_COLOR color) {
 	while (h--) {
 		gfx_drawPixel(x, y++, color);
 	}
@@ -303,7 +303,7 @@ gfx_drawFastVLine(int x, int y, int h, uint16_t color) {
  * Optimized line drawing for horizontal lines.
  */
 void
-gfx_drawFastHLine(int x, int y, int w, uint16_t color) {
+gfx_drawFastHLine(int x, int y, int w, GFX_COLOR color) {
 	while (w--) {
 		gfx_drawPixel(x++, y, color);
 	}
@@ -313,7 +313,7 @@ gfx_drawFastHLine(int x, int y, int w, uint16_t color) {
  * Draw a basic rectangle
  */
 void
-gfx_drawRect(int x, int y, int w, int h, uint16_t color) {
+gfx_drawRect(int x, int y, int w, int h, GFX_COLOR color) {
 	gfx_drawFastHLine(x        , y    , w, color);
 	gfx_drawFastHLine(x        , y+h-1, w, color);
 	gfx_drawFastVLine(x        , y    , h, color);
@@ -324,7 +324,7 @@ gfx_drawRect(int x, int y, int w, int h, uint16_t color) {
  * Draw a filled rectangle.
  */
 void
-gfx_fillRect(int x, int y, int w, int h, uint16_t color) {
+gfx_fillRect(int x, int y, int w, int h, GFX_COLOR color) {
 	int i;
 
 	for (i = x; i < x + w; i++) {
@@ -337,7 +337,7 @@ gfx_fillRect(int x, int y, int w, int h, uint16_t color) {
  * the screen.
  */
 void
-gfx_fillScreen(uint16_t color) {
+gfx_fillScreen(GFX_COLOR color) {
 	gfx_fillRect(0, 0, gfx_state.width, gfx_state.height, color);
 }
 
@@ -347,7 +347,7 @@ gfx_fillScreen(uint16_t color) {
  *	to put rounded corners on a rectangle.
  */
 void
-gfx_drawRoundRect(int x, int y, int w, int h, int r, uint16_t color) {
+gfx_drawRoundRect(int x, int y, int w, int h, int r, GFX_COLOR color) {
 
 	gfx_drawFastHLine(x+r  , y    , w-2*r, color); // Top
 	gfx_drawFastHLine(x+r  , y+h-1, w-2*r, color); // Bottom
@@ -365,7 +365,7 @@ gfx_drawRoundRect(int x, int y, int w, int h, int r, uint16_t color) {
  * Draw a filled rectangle with rounded corners
  */
 void
-gfx_fillRoundRect(int x, int y, int w, int h, int r, uint16_t color) {
+gfx_fillRoundRect(int x, int y, int w, int h, int r, GFX_COLOR color) {
 
 	/* this part is just a rectangle */
 	gfx_fillRect(x+r, y, w-2*r, h, color);
@@ -379,7 +379,7 @@ gfx_fillRoundRect(int x, int y, int w, int h, int r, uint16_t color) {
  * Draw a triangle.
  */
 void
-gfx_drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint16_t color) {
+gfx_drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, GFX_COLOR color) {
 	gfx_drawLine(x0, y0, x1, y1, color);
 	gfx_drawLine(x1, y1, x2, y2, color);
 	gfx_drawLine(x2, y2, x0, y0, color);
@@ -394,7 +394,7 @@ gfx_drawTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint16_t color)
  * a couple dozen instructions. It is pretty fast!
  */
 void
-gfx_fillTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint16_t color) {
+gfx_fillTriangle(int x0, int y0, int x1, int y1, int x2, int y2, GFX_COLOR color) {
 	int x, y;
 	int cross;
 
@@ -497,7 +497,7 @@ gfx_fillTriangle(int x0, int y0, int x1, int y1, int x2, int y2, uint16_t color)
  * This code puts a text glyph onto the screen.
  */
 void
-gfx_drawBitmap(int x, int y, const uint8_t *bitmap, int w, int h, uint16_t color) {
+gfx_drawBitmap(int x, int y, const uint8_t *bitmap, int w, int h, GFX_COLOR color) {
 	int i, j, byteWidth = (w + 7) / 8;
 
 	for(j=0; j<h; j++) {
@@ -518,7 +518,7 @@ gfx_drawBitmap(int x, int y, const uint8_t *bitmap, int w, int h, uint16_t color
  * queried or set with gfx_{get|set}Font() call.
  */
 void
-gfx_drawChar(int x, int y, unsigned char c, uint16_t fg, uint16_t bg, int size, enum gfx_rotate r) {
+gfx_drawChar(int x, int y, unsigned char c, GFX_COLOR fg, GFX_COLOR bg, int size, enum gfx_rotate r) {
 	const uint8_t	*glyph;
 	int i, k;
 	uint8_t descender, bit;
@@ -559,7 +559,7 @@ gfx_drawChar(int x, int y, unsigned char c, uint16_t fg, uint16_t bg, int size, 
 				} else {
 					gfx_drawPixel(x + dx, y + dy, fg);
 				}
-			} else if (bg != fg) {
+			} else if (! SAME_COLOR(bg, fg)) {
 				if (size > 1) {
 					gfx_fillRect(x + dx, y + dy, size, size, bg);
 				} else {
@@ -685,7 +685,7 @@ gfx_getTextWidth(void) {
  * is written (psuedo tranparent background)
  */
 void
-gfx_setTextColor(uint16_t fg, uint16_t bg) {
+gfx_setTextColor(GFX_COLOR fg, GFX_COLOR bg) {
 	gfx_state.text.fg = fg;
 	gfx_state.text.bg = bg;
 }

@@ -24,41 +24,55 @@
 #define GFX_DISPLAY_INVERT	8
 #define GFX_FONT_TINY		0x10
 
+typedef union __gfx_color {
+	struct {
+		uint32_t	b:8;
+		uint32_t	g:8;
+		uint32_t	r:8;
+		uint32_t	a:8;
+	} c;
+	uint32_t	raw;
+} GFX_COLOR;
+
+#define COLOR(red,grn,blu)	(GFX_COLOR){.c = {blu, grn, red, 0xff}}
+#define SAME_COLOR(c1, c2)	((c1.c.r == c2.c.r) && \
+				 (c1.c.g == c2.c.g) && \
+				 (c1.c.b == c2.c.b))
 
 enum gfx_rotate { GFX_ROT_0, GFX_ROT_90, GFX_ROT_180, GFX_ROT_270 };
 
-void gfx_drawPixel(int x, int y, uint16_t color);
-void gfx_drawLine(int x0, int y0, int x1, int y1, uint16_t color);
-void gfx_drawFastVLine(int x, int y, int h, uint16_t color);
-void gfx_drawFastHLine(int x, int y, int w, uint16_t color);
-void gfx_drawRect(int x, int y, int w, int h, uint16_t color);
-void gfx_fillRect(int x, int y, int w, int h, uint16_t color);
-void gfx_fillScreen(uint16_t color);
+void gfx_drawPixel(int x, int y, GFX_COLOR color);
+void gfx_drawLine(int x0, int y0, int x1, int y1, GFX_COLOR color);
+void gfx_drawFastVLine(int x, int y, int h, GFX_COLOR color);
+void gfx_drawFastHLine(int x, int y, int w, GFX_COLOR color);
+void gfx_drawRect(int x, int y, int w, int h, GFX_COLOR color);
+void gfx_fillRect(int x, int y, int w, int h, GFX_COLOR color);
+void gfx_fillScreen(GFX_COLOR color);
 
-void gfx_drawCircle(int x0, int y0, int r, uint16_t color);
+void gfx_drawCircle(int x0, int y0, int r, GFX_COLOR color);
 void gfx_drawCircleHelper(int x0, int y0, int r, uint8_t cornername,
-      uint16_t color);
-void gfx_fillCircle(int x0, int y0, int r, uint16_t color);
-void gfx_init(void (*draw)(int, int, uint16_t), int, int, int font_size);
+      GFX_COLOR color);
+void gfx_fillCircle(int x0, int y0, int r, GFX_COLOR color);
+void gfx_init(void (*draw)(int, int, GFX_COLOR), int, int, int font_size);
 
 void gfx_fillCircleHelper(int x0, int y0, int r, uint8_t cornername,
-      int delta, uint16_t color);
+      int delta, GFX_COLOR color);
 void gfx_drawTriangle(int x0, int y0, int x1, int y1,
-      int x2, int y2, uint16_t color);
+      int x2, int y2, GFX_COLOR color);
 void gfx_fillTriangle(int x0, int y0, int x1, int y1,
-      int x2, int y2, uint16_t color);
+      int x2, int y2, GFX_COLOR color);
 void gfx_drawRoundRect(int x0, int y0, int w, int h,
-      int radius, uint16_t color);
+      int radius, GFX_COLOR color);
 void gfx_fillRoundRect(int x0, int y0, int w, int h,
-      int radius, uint16_t color);
+      int radius, GFX_COLOR color);
 void gfx_drawBitmap(int x, int y, const uint8_t *bitmap,
-      int w, int h, uint16_t color);
-void gfx_drawChar(int x, int y, unsigned char c, uint16_t fg,
-      uint16_t bg, int size, enum gfx_rotate rotation);
+      int w, int h, GFX_COLOR color);
+void gfx_drawChar(int x, int y, unsigned char c, GFX_COLOR fg,
+      GFX_COLOR bg, int size, enum gfx_rotate rotation);
 void gfx_setTextRotate(enum gfx_rotate r);
 enum gfx_rotate gfx_getTextRotate(void);
 void gfx_setCursor(int x, int y);
-void gfx_setTextColor(uint16_t c, uint16_t bg);
+void gfx_setTextColor(GFX_COLOR c, GFX_COLOR bg);
 void gfx_setTextSize(int s);
 void gfx_setTextWrap(int w);
 int	gfx_getTextWidth(void);
