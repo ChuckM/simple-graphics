@@ -33,6 +33,13 @@ capabilities are provided:
  * A set of basic tests that use ASCII as their color pallete so you
    can experiment on a machine without display hardware.
 
+## The V2 stuff
+
+So I'm looking to update this to a second version which is more
+useful. This branch contains changes like the `GFX_COLOR` is now
+a union of either a 32 bit integer or an ARGB8888 tuple. I can make
+an adapter to write a 565 color from an 888 color.
+
 ## One Page API Reference
 
 The useful API calls in a single, easy to use reference.
