@@ -51,16 +51,18 @@ extern struct gfx_font tiny_font;
  * This maintains the 'state' of the graphics context
  */
 static struct {
-	void (*drawpixel)(int, int, GFX_COLOR);	/* user supplied pixel writer */
-	int16_t	disp_width, disp_height;	/* actual display dimensions */
+	void (*drawpixel)(void *, int, int, GFX_COLOR);	/* user supplied pixel writer */
+	int16_t	disp_width,
+			disp_height;			/* actual display dimensions */
 	int16_t width, height;			/* dimensions based on rotation */
 	struct gfx_font *font;			/* Current font in use */
-	uint16_t	flags;			/* State flags for library */
+	uint16_t	flags;				/* State flags for library */
 	enum gfx_rotate rotation;		/* Display rotation */
+	void *fb;						/* user supplied frame buffer pointer */
 	struct {
-		int16_t x, y;			/* Current "cursor" X/Y location */
-		GFX_COLOR bg, fg;		/* Background and foreground colors */
-		int16_t size;			/* Text "size" */
+		int16_t x, y;				/* Current "cursor" X/Y location */
+		GFX_COLOR bg, fg;			/* Background and foreground colors */
+		int16_t size;				/* Text "size" */
 		enum gfx_rotate rotation;	/* Text rotation */
 	} text;
 } gfx_state;
@@ -107,7 +109,7 @@ gfx_drawPixel(int x, int y, GFX_COLOR color) {
 	}
 
 	/* invoke user's callback in display co-ordinates */
-	(gfx_state.drawpixel)(dx, dy, color);
+	(gfx_state.drawpixel)(gfx_state.fb, dx, dy, color);
 }
 
 /*
@@ -115,7 +117,7 @@ gfx_drawPixel(int x, int y, GFX_COLOR color) {
  * sets the display size.
  */
 void
-gfx_init(void (*pixel_func)(int, int, GFX_COLOR), int width, int height, int font_size)
+gfx_init(void (*pixel_func)(void *, int, int, GFX_COLOR), int width, int height, int font_size, void *fb)
 {
 	gfx_state.width     = gfx_state.disp_width = width;
 	gfx_state.height    = gfx_state.disp_height = height;
@@ -125,6 +127,7 @@ gfx_init(void (*pixel_func)(int, int, GFX_COLOR), int width, int height, int fon
 	gfx_state.text.fg = COLOR(0, 0, 0);
 	gfx_state.text.bg = COLOR(0xff, 0xff, 0xff);
 	gfx_state.text.rotation = GFX_ROT_0;
+	gfx_state.fb = fb;
 	gfx_setFont(font_size);
 	gfx_state.drawpixel = pixel_func;
 }

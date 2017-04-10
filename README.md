@@ -40,6 +40,14 @@ useful. This branch contains changes like the `GFX_COLOR` is now
 a union of either a 32 bit integer or an ARGB8888 tuple. I can make
 an adapter to write a 565 color from an 888 color.
 
+Added a ride-along `void *` pointer in the `gfx_state` structure which
+is passed to the user's `draw_pixel` callback. This should point at the
+raw frame buffer data that draw pixel will operate on.
+
+That way only the user needs to know the _actual_ layout of the frame
+buffer data and how it represents pixels. Everything else is generic.
+
+
 ## One Page API Reference
 
 The useful API calls in a single, easy to use reference.

@@ -53,7 +53,8 @@ void gfx_drawCircle(int x0, int y0, int r, GFX_COLOR color);
 void gfx_drawCircleHelper(int x0, int y0, int r, uint8_t cornername,
       GFX_COLOR color);
 void gfx_fillCircle(int x0, int y0, int r, GFX_COLOR color);
-void gfx_init(void (*draw)(int, int, GFX_COLOR), int, int, int font_size);
+void gfx_init(void (*draw)(void *, int, int, GFX_COLOR), 
+				int, int, int font_size, void *fb);
 
 void gfx_fillCircleHelper(int x0, int y0, int r, uint8_t cornername,
       int delta, GFX_COLOR color);
