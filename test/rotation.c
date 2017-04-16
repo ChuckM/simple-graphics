@@ -15,6 +15,7 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include "gfx.h"
 
@@ -54,7 +55,7 @@ main(int argc, char *argv[]) {
 	printf("Testing the graphics code\n");
 	if (argc == 3) {
 		int angle;
-		if (strncmp(argv[1], "-r")) {
+		if (strncmp(argv[1], "-r", 2)) {
 			fprintf(stderr, "usage: rotation [-s 0|90|180|270]\n");
 			exit(1);
 		}
