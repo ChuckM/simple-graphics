@@ -1,6 +1,8 @@
 Simple Graphics Library
 -----------------------
 
+**NOTE: this is V1 of the library, V2 is the current development branch.**
+
 There is a bounty of cheap color LCD displays these days. Driving them
 requires some direct bit twiddling to do basic things like draw lines
 or circles or characters on them. The simple graphics library has a
