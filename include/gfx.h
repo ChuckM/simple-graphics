@@ -131,17 +131,29 @@ void gfx_set_font_glyphs(GFX_CTX *g, GFX_FONT_GLYPHS *glyph);
 #define gfx_get_width(g)	g->width
 #define gfx_get_height(g)	g->height
 
-/* XXX fix these to be GFX_COLORS */
+/* NB: B, G, R, A ordering */ 
 
-#define GFX_COLOR_WHITE          0xFFFF
-#define GFX_COLOR_BLACK          0x0000
-#define GFX_COLOR_GREY           0xF7DE
-#define GFX_COLOR_BLUE           0x001F
-#define GFX_COLOR_BLUE2          0x051F
-#define GFX_COLOR_RED            0xF800
-#define GFX_COLOR_MAGENTA        0xF81F
-#define GFX_COLOR_GREEN          0x07E0
-#define GFX_COLOR_CYAN           0x7FFF
-#define GFX_COLOR_YELLOW         0xFFE0
+#define GFX_COLOR_BLACK		(GFX_COLOR){.c={0x00, 0x00, 0x00, 0xff}}
+#define GFX_COLOR_DKGREY	(GFX_COLOR){.c={0x55, 0x55, 0x55, 0xff}}
+#define GFX_COLOR_LTGREY	(GFX_COLOR){.c={0xaa, 0xaa, 0xaa, 0xff}}
+#define GFX_COLOR_WHITE		(GFX_COLOR){.c={0xff, 0xff, 0xff, 0xff}}
+#define GFX_COLOR_DKBLUE	(GFX_COLOR){.c={0xaa, 0x00, 0x00, 0xFF}}
+#define GFX_COLOR_BLUE		(GFX_COLOR){.c={0xff, 0x55, 0x55, 0xff}}
+#define GFX_COLOR_LTBLUE	(GFX_COLOR){.c={0xff, 0xaa, 0xaa, 0xff}}
+#define GFX_COLOR_DKGREEN	(GFX_COLOR){.c={0x00, 0xaa, 0x00, 0xff}}
+#define GFX_COLOR_GREEN		(GFX_COLOR){.c={0x55, 0xff, 0x55, 0xff}}
+#define GFX_COLOR_LTGREEN	(GFX_COLOR){.c={0xaa, 0xff, 0xaa, 0xff}}
+#define GFX_COLOR_DKCYAN	(GFX_COLOR){.c={0xaa, 0xaa, 0x00, 0xff}}
+#define GFX_COLOR_CYAN		(GFX_COLOR){.c={0xff, 0xff, 0x55, 0xff}}
+#define GFX_COLOR_LTCYAN	(GFX_COLOR){.c={0xff, 0xff, 0xaa, 0xff}}
+#define GFX_COLOR_DKRED		(GFX_COLOR){.c={0x00, 0x00, 0xaa, 0xff}}
+#define GFX_COLOR_RED		(GFX_COLOR){.c={0x55, 0x55, 0xff, 0xff}}
+#define GFX_COLOR_LTRED		(GFX_COLOR){.c={0xaa, 0xaa, 0xff, 0xff}}
+#define GFX_COLOR_DKMAGENTA	(GFX_COLOR){.c={0xaa, 0x00, 0xaa, 0xff}}
+#define GFX_COLOR_MAGENTA	(GFX_COLOR){.c={0xff, 0x55, 0xff, 0xff}}
+#define GFX_COLOR_LTMAGENTA	(GFX_COLOR){.c={0xff, 0xaa, 0xff, 0xff}}
+#define GFX_COLOR_DKYELLOW	(GFX_COLOR){.c={0x00, 0xaa, 0xaa, 0xff}}
+#define GFX_COLOR_YELLOW	(GFX_COLOR){.c={0x55, 0xff, 0xff, 0xff}}
+#define GFX_COLOR_LTYELLOW	(GFX_COLOR){.c={0xaa, 0xff, 0xff, 0xff}}
 
 #endif  /* SIMPLE_GFX */
