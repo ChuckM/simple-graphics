@@ -1029,8 +1029,8 @@ gfx_putc(GFX_CTX *g, char c)
 {
 	int tx, ty;
 	__paint_glyph(g, g->text.cx, g->text.cy, c, g->text.fg, g->text.bg);
-	g->text.cx += g->glyphs->width * g->text.cr.xfrm[0][0];
-	g->text.cy += g->glyphs->width * g->text.cr.xfrm[0][1];
+	g->text.cx += g->glyphs->width * g->text.magnify * g->text.cr.xfrm[0][0];
+	g->text.cy += g->glyphs->width * g->text.magnify * g->text.cr.xfrm[0][1];
 }
 
 /*
@@ -1052,6 +1052,7 @@ gfx_puts(GFX_CTX *g, char *s)
 {
 	while (*s != 0) {
 		gfx_putc(g, *s);
+		s++;
 	}
 }
 
