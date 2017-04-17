@@ -1,15 +1,9 @@
 /*
- * Simple Graphics - Small Font Display
+ * Simple Graphics - Tiny Font Display
  *
- * Copyright (c) 2014-2015 Charles McManis, all rights reserved.
+ * Copyright (c) 2014-2017 Charles McManis, all rights reserved.
  *
- * This source code is licensed under a Creative Commons 4.0 
- * International Public license. 
- *
- * See: http://creativecommons.org/licenses/by/4.0/legalcode for
- * details.
- *
- * Display all of the characters in the "small"
+ * Display all of the characters in the "tiny"
  * font so that you can verify the bit positions
  * are correct and they look correct.
  */
@@ -17,15 +11,17 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "gfx.h"
+#include "colors.h"
 
-#define SWIDTH 128
-#define SHEIGHT 32
+/* character box is 4 x 6 so screen is 96 x 8 rows of 8 */
+#define SWIDTH 16*4 
+#define SHEIGHT 8*6
 
 uint8_t screen[SWIDTH * SHEIGHT];
 
 void
-draw_pixel(int x, int y, uint16_t color) {
-	screen[y*SWIDTH + x] = color & 0xff;
+draw_pixel(void *fb, int x, int y, GFX_COLOR color) {
+	screen[y*SWIDTH + x] = color.raw & 0xff;
 }
 
 void print_screen(void) {
@@ -40,25 +36,22 @@ void print_screen(void) {
 
 int
 main(int argc, char *argv[]) {
-	char buf[260];
-	int a;
-	char *t;
+	uint8_t a;
+	int	line;
+	GFX_CTX *g;
 
-	printf("Tiny font:\n");
+	printf("Functional Test: Dump Tiny Font\n");
 	
-
-	gfx_init(draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_TINY);
-	gfx_setFont(GFX_FONT_TINY);
-	gfx_fillScreen((uint16_t) ' ');
-	gfx_setTextColor((uint16_t) '@', (uint16_t) ' ');
-	gfx_setCursor(0, 7);
-	gfx_setTextWrap(1);
-
+	g = gfx_init(draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_TINY, (void *) screen);
+	gfx_fill_screen(g, C_BLANK);
+	gfx_set_text_color(g, C_DOT, C_BLANK);
+	line = -1;
 	for (a = 0; a < 128; a++) {
-		gfx_putc((char) a);
-		if (((a+1) & 0x1f) == 0) {
-			gfx_setCursor(0, 7 + ((a >> 5)+1) * 7);
+		if ((a % 16) == 0) {
+			line += gfx_get_text_height(g);
+			gfx_set_text_cursor(g, 0, line);
 		}
+		gfx_putc(g, a);
 	}
 	print_screen();
 }

@@ -1,14 +1,10 @@
 /* 
  * Simple Graphics
  *
- * Copyright (c) 2014-2015 Charles McManis, all rights reserved.
+ * Copyright (c) 2014-2017 Charles McManis, all rights reserved.
  *
- * This source code is licensed under a Creative Commons 4.0 
- * International Public license. 
+ * Version 2
  *
- * See: http://creativecommons.org/licenses/by/4.0/legalcode for
- * details.
- * 
  * Basic prototype definitions and flag #defines for the simple
  * graphics routines.
  *
@@ -18,11 +14,7 @@
 #include <stdint.h>
 
 
-#define GFX_FONT_LARGE		1
-#define GFX_FONT_SMALL		2
-#define GFX_TEXT_WRAP		4
 #define GFX_DISPLAY_INVERT	8
-#define GFX_FONT_TINY		0x10
 
 typedef union __gfx_color {
 	struct {
@@ -39,65 +31,14 @@ typedef union __gfx_color {
 				 (c1.c.g == c2.c.g) && \
 				 (c1.c.b == c2.c.b))
 
-enum gfx_rotate { GFX_ROT_0, GFX_ROT_90, GFX_ROT_180, GFX_ROT_270 };
-
-void gfx_drawPixel(int x, int y, GFX_COLOR color);
-void gfx_drawLine(int x0, int y0, int x1, int y1, GFX_COLOR color);
-void gfx_drawFastVLine(int x, int y, int h, GFX_COLOR color);
-void gfx_drawFastHLine(int x, int y, int w, GFX_COLOR color);
-void gfx_drawRect(int x, int y, int w, int h, GFX_COLOR color);
-void gfx_fillRect(int x, int y, int w, int h, GFX_COLOR color);
-void gfx_fillScreen(GFX_COLOR color);
-
-void gfx_drawCircle(int x0, int y0, int r, GFX_COLOR color);
-void gfx_drawCircleHelper(int x0, int y0, int r, uint8_t cornername,
-      GFX_COLOR color);
-void gfx_fillCircle(int x0, int y0, int r, GFX_COLOR color);
-void gfx_init(void (*draw)(void *, int, int, GFX_COLOR), 
-				int, int, int font_size, void *fb);
-
-void gfx_fillCircleHelper(int x0, int y0, int r, uint8_t cornername,
-      int delta, GFX_COLOR color);
-void gfx_drawTriangle(int x0, int y0, int x1, int y1,
-      int x2, int y2, GFX_COLOR color);
-void gfx_fillTriangle(int x0, int y0, int x1, int y1,
-      int x2, int y2, GFX_COLOR color);
-void gfx_drawRoundRect(int x0, int y0, int w, int h,
-      int radius, GFX_COLOR color);
-void gfx_fillRoundRect(int x0, int y0, int w, int h,
-      int radius, GFX_COLOR color);
-void gfx_drawBitmap(int x, int y, const uint8_t *bitmap,
-      int w, int h, GFX_COLOR color);
-void gfx_drawChar(int x, int y, unsigned char c, GFX_COLOR fg,
-      GFX_COLOR bg, int size, enum gfx_rotate rotation);
-void gfx_setTextRotate(enum gfx_rotate r);
-enum gfx_rotate gfx_getTextRotate(void);
-void gfx_setCursor(int x, int y);
-void gfx_setTextColor(GFX_COLOR c, GFX_COLOR bg);
-void gfx_setTextSize(int s);
-void gfx_setTextWrap(int w);
-int	gfx_getTextWidth(void);
-int gfx_getTextHeight(void);
-void gfx_setRotation(enum gfx_rotate r);
-void gfx_setMirrored(int m);
-int gfx_getMirrored(void);
-void gfx_puts(unsigned char *);
-void gfx_putc(unsigned char);
-int gfx_write(unsigned char );
-
-int gfx_height(void);
-int gfx_width(void);
-enum gfx_rotate gfx_getTextRotation(void);
-void gfx_setTextRotation(enum gfx_rotate);
-
-int gfx_getFont(void);
-void gfx_setFont(int font);
-enum gfx_rotate gfx_getRotation(void);
+typedef enum { GFX_ROT_0, GFX_ROT_90, GFX_ROT_180, GFX_ROT_270 } GFX_ROTATION;
+typedef enum { GFX_FONT_TINY, GFX_FONT_SMALL, GFX_FONT_LARGE } GFX_FONT;
 
 /*
- * ASCII Font structure
+ * 256 glyph font structure, nominally ASCII or ISO-LATIN1. Sorry but I'm not
+ * going to do Unicode on an embedded micro's LCD display just yet.
  */
-struct gfx_font {
+typedef struct {
 	const uint8_t	*raw;	/* raw font data */
 	int16_t			chars;	/* number of characters in font */
 	int16_t			size;	/* bytes per glyph */
@@ -105,7 +46,92 @@ struct gfx_font {
 	uint8_t			width;	/* spacing between characters. */
 	uint8_t			height;	/* spacing between rows of characters. */
 	uint8_t			baseline;	/* # of lines above 'y' to the top of glyph */
-};
+} GFX_FONT_GLYPHS;
+
+/*
+ * state of rotation of the display
+ *
+ */
+typedef struct {
+	float	angle;		/* rotation angle */
+	int		x, y;		/* origin of the rotation */
+	float	xfrm[2][2];	/* 2 X 2 matrix */
+} GFX_ROTATION_STATE;
+
+/*
+ * This maintains the 'state' of the graphics context
+ */
+typedef struct {
+	void (*drawpixel)(void *, int, int, GFX_COLOR);	/* user supplied pixel writer */
+	uint16_t	w, h;				/* dimensions of drawable space */
+	int16_t cx, cy;					/* current x and y in *user* space */
+	uint16_t	flags;				/* State flags for library */
+	GFX_ROTATION_STATE	cr;
+	void *fb;						/* user supplied frame buffer pointer */
+	struct {
+		int16_t cx, cy;				/* Current "cursor" X/Y location */
+		GFX_COLOR bg, fg;			/* Background and foreground colors */
+		GFX_FONT font;				/* Text "font" */
+		int magnify;				/* Text "magnification" */
+		GFX_ROTATION_STATE cr;		/* Text rotation direction */
+	} text;
+	GFX_FONT_GLYPHS *glyphs;		/* Current font in use */
+} GFX_CTX;
+
+
+GFX_CTX *gfx_init(void (*draw)(void *, int, int, GFX_COLOR),
+				int width, int height, GFX_FONT size, void *fb);
+
+void gfx_move_to(GFX_CTX *g, int x, int y);
+void gfx_move(GFX_CTX *g, int x, int y);
+
+void gfx_draw_point(GFX_CTX *g, GFX_COLOR color);
+void gfx_draw_line(GFX_CTX *g, int x, int y, GFX_COLOR color);
+
+/* set rotation [0 degress by default] */
+void gfx_rotate(GFX_CTX *g, float angle);
+/* set rotation axis [w/2, h/2] by default */
+void gfx_set_rotation_origin(GFX_CTX *g, int x, int y);
+
+void gfx_draw_rectangle(GFX_CTX *g, int w, int h, GFX_COLOR color);
+void gfx_fill_rectangle(GFX_CTX *g, int w, int h, GFX_COLOR color);
+void gfx_draw_rounded_rectangle(GFX_CTX *g, int w, int h, int r, GFX_COLOR color);
+void gfx_fill_rounded_rectangle(GFX_CTX *g, int w, int h, int r, GFX_COLOR color);
+
+void gfx_fill_screen(GFX_CTX *g, GFX_COLOR color);
+
+void gfx_draw_circle(GFX_CTX *g, int r, GFX_COLOR color);
+void gfx_fill_circle(GFX_CTX *g, int r, GFX_COLOR color);
+
+void gfx_draw_triangle(GFX_CTX *g, int ax, int ay, int bx, int by, GFX_COLOR c);
+void gfx_fill_triangle(GFX_CTX *g, int ax, int ay, int bx, int by, GFX_COLOR c);
+
+
+/*
+ * Text handling functions.
+ * NB: This is 'simple' graphics so each font has at most 256
+ *     glyphs.
+ */
+void gfx_set_text_rotation(GFX_CTX *g, float angle);
+void gfx_set_text_color(GFX_CTX *g, GFX_COLOR fg, GFX_COLOR bg);
+void gfx_set_text_cursor(GFX_CTX *g, int x, int y);
+void gfx_set_text_size(GFX_CTX *g, int sz);
+int	 gfx_get_text_height(GFX_CTX *g);
+int	 gfx_get_text_width(GFX_CTX *g);
+
+int  gfx_get_string_width(GFX_CTX *g, char *str);
+void gfx_putc(GFX_CTX *g, char c);
+void gfx_puts(GFX_CTX *g, char *s);
+GFX_FONT gfx_get_font(GFX_CTX *g);
+GFX_FONT gfx_set_font(GFX_CTX *g, GFX_FONT size);
+void gfx_draw_glyph(GFX_CTX *g, uint8_t c, GFX_COLOR fg, GFX_COLOR bg);
+void gfx_set_font_glyphs(GFX_CTX *g, GFX_FONT_GLYPHS *glyph);
+
+/* syntactic sugar really */
+#define gfx_get_width(g)	g->width
+#define gfx_get_height(g)	g->height
+
+/* XXX fix these to be GFX_COLORS */
 
 #define GFX_COLOR_WHITE          0xFFFF
 #define GFX_COLOR_BLACK          0x0000
