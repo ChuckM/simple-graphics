@@ -851,6 +851,7 @@ gfx_set_text_size(GFX_CTX *g, int size)
 {
 	g->text.magnify = size;
 }
+
 /*
  * gfx_get_text_height( ... )
  *
@@ -861,6 +862,20 @@ gfx_get_text_height(GFX_CTX *g)
 {
 	if (g->glyphs != NULL) {
 		return g->glyphs->height;
+	}
+	return 0;
+}
+
+/*
+ * gfx_get_text_baseline( ... )
+ *
+ * Returns the 'baseline' for the characters
+ */
+int
+gfx_get_text_baseline(GFX_CTX *g)
+{
+	if (g->glyphs != NULL) {
+		return g->glyphs->baseline;
 	}
 	return 0;
 }
