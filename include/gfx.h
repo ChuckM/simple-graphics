@@ -116,8 +116,9 @@ void gfx_set_text_rotation(GFX_CTX *g, float angle);
 void gfx_set_text_color(GFX_CTX *g, GFX_COLOR fg, GFX_COLOR bg);
 void gfx_set_text_cursor(GFX_CTX *g, int x, int y);
 void gfx_set_text_size(GFX_CTX *g, int sz);
-int	 gfx_get_text_height(GFX_CTX *g);
-int	 gfx_get_text_width(GFX_CTX *g);
+int gfx_get_text_height(GFX_CTX *g);
+int gfx_get_text_baseline(GFX_CTX *g);
+int gfx_get_text_width(GFX_CTX *g);
 
 int  gfx_get_string_width(GFX_CTX *g, char *str);
 void gfx_putc(GFX_CTX *g, char c);
