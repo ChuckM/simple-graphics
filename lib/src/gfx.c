@@ -33,6 +33,7 @@ GFX_CTX *
 gfx_init(void (*pixel_func)(void *, int, int, GFX_COLOR), int width, int height, GFX_FONT font, void *fb)
 {
 	GFX_CTX *res = malloc(sizeof(GFX_CTX)); /* allocate a context */
+	memset((uint8_t *)res, 0, sizeof(GFX_CTX));
 	res->w			= width;
 	res->h			= height;
 	res->cr.x	= width / 2;
