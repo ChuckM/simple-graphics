@@ -118,7 +118,7 @@ __paint_pixel(GFX_CTX *gfx, int x, int y, GFX_COLOR color)
 	 * mirror the screen if requested
  	 * X only? Do we need Y here too?
 	 */
-	if ((gfx->flags & GFX_DISPLAY_INVERT) != 0) {
+	if ((gfx->flags & GFX_DISPLAY_INVERT_X) != 0) {
 		x = (gfx->w - 1) - x;
 	}
 
@@ -497,6 +497,20 @@ gfx_draw_point(GFX_CTX *gfx, GFX_COLOR color) {
 }
 
 /*
+ * gfx_draw_point_at( ... )
+ *
+ * Draw a point (pixel) at the given co-ordinates, this also moves
+ * the drawing cursor to that point so the next relative move will
+ * be from that point.
+ */
+void
+gfx_draw_point_at(GFX_CTX *gfx, int x, int y, GFX_COLOR color) {
+	__paint_pixel(gfx, x, y, color);
+	gfx->cx = x;
+	gfx->cy = y;
+}
+
+/*
  * gfx_move_to( ... )
  *
  *	Set the 'current' location to a specific place
@@ -537,6 +551,21 @@ gfx_draw_line(GFX_CTX *g, int x, int y, GFX_COLOR color)
 }
 
 /*
+ * gfx_draw_line_to( ... )
+ *
+ * Draw a line from the 'current' position to the
+ * destination postion which is absolute in display
+ * co-ordinates.
+ */
+void
+gfx_draw_line_to(GFX_CTX *g, int x, int y, GFX_COLOR color)
+{
+	__paint_line(g, g->cx, g->cy, x, y, color);
+	g->cx = x;
+	g->cy = y;
+}
+
+/*
  * gfx_draw_circle( ... )
  *
  * Draw a circle at the current location of radius
@@ -548,6 +577,21 @@ gfx_draw_circle(GFX_CTX *g, int r, GFX_COLOR color) {
 		return;
 	}
 	__paint_quadrant(g, g->cx, g->cy, r, 0xf, 0, color);
+}
+
+/*
+ * gfx_draw_circle_at( ... )
+ *
+ * Draw a circle at the current location of radius
+ * 'r'.
+ */
+void
+gfx_draw_circle_at(GFX_CTX *g, int x, int y, int r, GFX_COLOR color) {
+	if (r <= 0) {
+		return;
+	}
+	__paint_quadrant(g, x, y, r, 0xf, 0, color);
+	g->cx = x; g->cy = y;
 }
 
 /*
@@ -565,6 +609,20 @@ gfx_fill_circle(GFX_CTX *g, int r, GFX_COLOR color) {
 }
 
 /*
+ * gfx_fill_circle_at( ... )
+ *
+ * Draw a filled circle at [x, y] of radius 'r'.
+ */
+void
+gfx_fill_circle_at(GFX_CTX *g, int x, int y, int r, GFX_COLOR color) {
+	if (r <= 0) {
+		return;
+	}
+	__paint_quadrant(g, x, y, r, 0xf, 1, color);
+	g->cx = x; g->cy = y;
+}
+
+/*
  * gfx_draw_triangle( ... )
  * 
  * Draw a triangle, the starting point is the current 
@@ -579,6 +637,21 @@ gfx_draw_triangle(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color)
 }
 
 /*
+ * gfx_draw_triangle_at( ... )
+ * 
+ * Draw a triangle, the starting point is the current 
+ * location which does not change. 
+ */
+void
+gfx_draw_triangle_at(GFX_CTX *g, int x, int y, int x0, int y0, int x1, int y1, GFX_COLOR color)
+{
+	g->cx = x, g->cy = y;
+	__paint_line(g, g->cx, g->cy, g->cx + x0, g->cy + y0, color);
+	__paint_line(g, g->cx, g->cy, g->cx + x1, g->cy + y1, color);
+	__paint_line(g, g->cx + x0, g->cy + y0, g->cx + x1, g->cy + y1, color);
+}
+
+/*
  * gfx_fill_triangle( ... )
  * 
  * Draw a filled triangle, the starting point is the current 
@@ -587,6 +660,15 @@ gfx_draw_triangle(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color)
 void
 gfx_fill_triangle(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color)
 {
+	__paint_triangle(g, g->cx, g->cy, 
+						g->cx + x0, g->cy + y0,
+						g->cx + x1, g->cy + y1,  color);
+}
+
+void
+gfx_fill_triangle_at(GFX_CTX *g, int x, int y, int x0, int y0, int x1, int y1, GFX_COLOR color)
+{
+	g->cx = x; g->cy = y;
 	__paint_triangle(g, g->cx, g->cy, 
 						g->cx + x0, g->cy + y0,
 						g->cx + x1, g->cy + y1,  color);
@@ -625,6 +707,12 @@ gfx_draw_rectangle(GFX_CTX *g, int w, int h, GFX_COLOR color)
 	__paint_line(g, x1, y1, x0, y1, color);
 	__paint_line(g, x0, y1, x0, y0, color);
 }
+void
+gfx_draw_rectangle_at(GFX_CTX *g, int x, int y, int w, int h, GFX_COLOR c)
+{
+	g->cx = x; g->cy = y;
+	gfx_draw_rectangle(g, w, h, c);
+}
 
 /*
  * gfx_fill_rectangle( ... )
@@ -659,6 +747,13 @@ gfx_fill_rectangle(GFX_CTX *g, int w, int h, GFX_COLOR color)
 	__paint_rectangle(g, x0, y0, w, h, color);
 }
 
+void
+gfx_fill_rectangle_at(GFX_CTX *g, int x, int y, int w, int h, GFX_COLOR c)
+{
+	g->cx = x; g->cy = y;
+	gfx_fill_rectangle(g, w, h, c);
+}
+
 /*
  * gfx_fill_screen( ... )
  *
@@ -686,9 +781,6 @@ gfx_fill_screen(GFX_CTX *g, GFX_COLOR color)
  * works together without gaps etc.
  */
 
-#define TEST_C1 (GFX_COLOR){ .raw=(uint32_t)'1'}
-#define TEST_C2 (GFX_COLOR){ .raw=(uint32_t)'2'}
-
 void
 gfx_draw_rounded_rectangle(GFX_CTX *g, int w, int h, int r, GFX_COLOR color)
 {
@@ -711,6 +803,13 @@ gfx_draw_rounded_rectangle(GFX_CTX *g, int w, int h, int r, GFX_COLOR color)
 	__paint_line(g, g->cx,         g->cy + r + 1, g->cx,               g->cy + (h - r - 2), color); /* left */
 	__paint_line(g, g->cx + w - 1, g->cy + r + 1, g->cx + w - 1,       g->cy + (h - r - 2), color); /* right */
 	__paint_line(g, g->cx + r + 1, g->cy + h - 1, g->cx + (w - r - 2), g->cy + h - 1,       color); /* bottom */
+}
+
+void
+gfx_draw_rounded_rectangle_at(GFX_CTX *g, int x, int y, int w, int h, int r, GFX_COLOR color)
+{
+	g->cx = x; g->cy = y;
+	gfx_draw_rounded_rectangle(g, w, h, r, color);
 }
 
 /*
@@ -769,34 +868,12 @@ gfx_fill_rounded_rectangle(GFX_CTX *g, int w, int h, int r, GFX_COLOR color)
 
 }
 
-#if 0
-/*
- * XXX this is not useful code? XXX
- * used to be 'draw bitmap'
- * This code puts a text glyph onto the screen. It defines by its
- * function how rotation works and cursor placement.
- * NB: Global discussion about baseline vs top line vs bottom line
- *	   as the 'origin' point for glyphs.
- */
-static void
-__paint_glyph(GFX_CTX *g,
-	int x, int y, const uint8_t *bitmap, int w, int h, GFX_COLOR color)
+void
+gfx_fill_rounded_rectangle_at(GFX_CTX *g, int x, int y, int w, int h, int r, GFX_COLOR color)
 {
-	int i, j, byteWidth = (w + 7) / 8;
-	int tx, ty;
-
-	for(j = 0; j < h; j++) {
-		for(i = 0; i < w; i++ ) {
-			if(*(bitmap + j * byteWidth + i / 8) & (128 >> (i & 7))) {
-				/* rotate */
-				tx = i * g->text.cr.xfrm[0][0] + i * g->text.cr.xfrm[1][0];
-				ty = j * g->text.cr.xfrm[0][1] + j * g->text.cr.xfrm[1][1];
-				__paint_pixel(g, x+tx, y+ty, color);
-			}
-		}
-  	}
+	g->cx = x; g->cy = y;
+	gfx_fill_rounded_rectangle(g, w, h, r, color);
 }
-#endif
 
 /*
  * gfx_set_text_rotation( ... )
@@ -1083,14 +1160,14 @@ void
 gfx_set_mirrored(GFX_CTX *g, int m)
 {
 	if (m) {
-		g->flags |= GFX_DISPLAY_INVERT;
+		g->flags |= GFX_DISPLAY_INVERT_X;
 	} else {
-		g->flags &= ~GFX_DISPLAY_INVERT;
+		g->flags &= ~GFX_DISPLAY_INVERT_X;
 	}
 }
 
 int
 gfx_get_mirrored(GFX_CTX *g)
 {
-	return ((g->flags & GFX_DISPLAY_INVERT) != 0);
+	return ((g->flags & GFX_DISPLAY_INVERT_X) != 0);
 }

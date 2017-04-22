@@ -14,7 +14,8 @@
 #include <stdint.h>
 
 
-#define GFX_DISPLAY_INVERT	8
+#define GFX_DISPLAY_INVERT_X	8
+#define GFX_DISPLAY_INVERT_Y	4
 
 typedef union __gfx_color {
 	struct {
@@ -79,32 +80,50 @@ typedef struct {
 } GFX_CTX;
 
 
+/* Utility functions */
 GFX_CTX *gfx_init(void (*draw)(void *, int, int, GFX_COLOR),
 				int width, int height, GFX_FONT size, void *fb);
 
-void gfx_move_to(GFX_CTX *g, int x, int y);
-void gfx_move(GFX_CTX *g, int x, int y);
-
-void gfx_draw_point(GFX_CTX *g, GFX_COLOR color);
-void gfx_draw_line(GFX_CTX *g, int x, int y, GFX_COLOR color);
-
+void gfx_fill_screen(GFX_CTX *g, GFX_COLOR color);
 /* set rotation [0 degress by default] */
 void gfx_rotate(GFX_CTX *g, float angle);
 /* set rotation axis [w/2, h/2] by default */
 void gfx_set_rotation_origin(GFX_CTX *g, int x, int y);
+void gfx_set_mirrored(GFX_CTX *g, int f);
+
+void gfx_move(GFX_CTX *g, int x, int y);
+void gfx_move_to(GFX_CTX *g, int x, int y);
+
+/* Drawing functions */
+void gfx_draw_point(GFX_CTX *g, GFX_COLOR color);
+void gfx_draw_point_at(GFX_CTX *g, int x, int y, GFX_COLOR color);
+
+void gfx_draw_line(GFX_CTX *g, int x, int y, GFX_COLOR color);
+void gfx_draw_line_to(GFX_CTX *g, int x, int y, GFX_COLOR color);
 
 void gfx_draw_rectangle(GFX_CTX *g, int w, int h, GFX_COLOR color);
+void gfx_draw_rectangle_at(GFX_CTX *g, int x, int y, int w, int h, GFX_COLOR color);
 void gfx_fill_rectangle(GFX_CTX *g, int w, int h, GFX_COLOR color);
-void gfx_draw_rounded_rectangle(GFX_CTX *g, int w, int h, int r, GFX_COLOR color);
-void gfx_fill_rounded_rectangle(GFX_CTX *g, int w, int h, int r, GFX_COLOR color);
+void gfx_fill_rectangle_at(GFX_CTX *g, int x, int y, int w, int h, GFX_COLOR color);
 
-void gfx_fill_screen(GFX_CTX *g, GFX_COLOR color);
+void gfx_draw_rounded_rectangle(GFX_CTX *g, int w, int h, int r, GFX_COLOR color);
+void gfx_draw_rounded_rectangle_at(GFX_CTX *g, int x, int y, int w, int h, int r, GFX_COLOR color);
+
+void gfx_fill_rounded_rectangle(GFX_CTX *g, int w, int h, int r, GFX_COLOR color);
+void gfx_fill_rounded_rectangle_at(GFX_CTX *g, int x, int y, int w, int h, int r, GFX_COLOR color);
+
 
 void gfx_draw_circle(GFX_CTX *g, int r, GFX_COLOR color);
+void gfx_draw_circle_at(GFX_CTX *g, int x, int y, int r, GFX_COLOR color);
+
 void gfx_fill_circle(GFX_CTX *g, int r, GFX_COLOR color);
+void gfx_fill_circle_at(GFX_CTX *g, int x, int y, int r, GFX_COLOR color);
 
 void gfx_draw_triangle(GFX_CTX *g, int ax, int ay, int bx, int by, GFX_COLOR c);
+void gfx_draw_triangle_at(GFX_CTX *g, int x, int y, int ax, int ay, int bx, int by, GFX_COLOR c);
+
 void gfx_fill_triangle(GFX_CTX *g, int ax, int ay, int bx, int by, GFX_COLOR c);
+void gfx_fill_triangle_at(GFX_CTX *g, int x, int y, int ax, int ay, int bx, int by, GFX_COLOR c);
 
 
 /*
@@ -131,6 +150,8 @@ void gfx_set_font_glyphs(GFX_CTX *g, GFX_FONT_GLYPHS *glyph);
 /* syntactic sugar really */
 #define gfx_get_width(g)	g->width
 #define gfx_get_height(g)	g->height
+#define gfx_get_current_x(g)	g->cx
+#define gfx_get_current_y(g)	g->cy
 
 /* NB: B, G, R, A ordering */ 
 
