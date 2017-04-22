@@ -185,7 +185,7 @@ to an absolute co-ordinate using `gfx_move_to` (draw cursor) or
 ### Color Defines
 
 The following color defines are provided in `gfx.h`, they are based
-on an RGB565 Color pallete.
+on the EGA 16 color palette.
 
 ```
 /* Note: B, G, R, A ordering */ 
