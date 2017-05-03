@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "gfx.h"
+#include <gfx.h>
 
 #define DEBUG
 extern GFX_FONT_GLYPHS small_font;
