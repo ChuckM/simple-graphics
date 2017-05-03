@@ -190,7 +190,7 @@ to an absolute co-ordinate using `gfx_move_to` (draw cursor) or
     `[x0, y0]` to `[x1, y1]` in floating point viewport space into the display.
 
 #### Example
-```
+```c
 	void
 	plot_sin(GFX_CTX *c, int x, int y, int w, int h)
 	{
