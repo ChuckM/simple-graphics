@@ -180,7 +180,34 @@ to an absolute co-ordinate using `gfx_move_to` (draw cursor) or
 	and 270 which is straight up with the top of the text pointed
 	left.
 
+### View Ports
+  * `GFX_VIEW *gfx_viewport(GFX_CTX *g, x, y, w, h, min_x, min_y, max_x, max_y)` --
+    This function creates a viewing transform so that you can `plot` in
+    a traditional floating point co-ordinate space and have it get
+    automatically mapped to a rectangle on the display. Note that if you've
+    rotated the display your plot will be rotated too.
+  * `vp_plot(GFX_VIEW *vp, float x0, y0, float x1, y1)` -- Draw a line from
+    `[x0, y0]` to `[x1, y1]` in floating point viewport space into the display.
 
+#### Example
+```
+	void
+	plot_sin(GFX_CTX *c, int x, int y, int w, int h)
+	{
+		float	i;
+		float	x0, y0;
+		GFX_VIEW *vp;
+		/* View port is +/- 1.0 on Y and 0 to 2*PI (TAU) on X */
+		vp = gfx_viewport(c, x, y, w, h, 0, -1.0, 2 * M_PI, 1.0);
+		x0 = 0;
+		y0 = sin(0);
+		for (i = 2 * M_PI / 100.0; i < 2 * M_PI; i += (2 * M_PI) / 100.0) {
+			vp_plot(vp, x0, y0, i, sin(i));
+			x0 = i;
+			y0 = sin(i);
+		}
+	}
+```
 
 ### Color Defines
 

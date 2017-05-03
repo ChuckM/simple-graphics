@@ -79,6 +79,12 @@ typedef struct {
 	GFX_FONT_GLYPHS *glyphs;		/* Current font in use */
 } GFX_CTX;
 
+typedef struct {
+	GFX_CTX		*g;
+	float		sx, sy;		/* X scale and Y scale */
+	float		ox, oy;		/* offset X and offset Y */
+	int			x, y, w, h;	/* box on the screen to use */
+} GFX_VIEW;
 
 /* Utility functions */
 GFX_CTX *gfx_init(void (*draw)(void *, int, int, GFX_COLOR),
@@ -146,6 +152,13 @@ GFX_FONT gfx_get_font(GFX_CTX *g);
 GFX_FONT gfx_set_font(GFX_CTX *g, GFX_FONT size);
 void gfx_draw_glyph(GFX_CTX *g, uint8_t c, GFX_COLOR fg, GFX_COLOR bg);
 void gfx_set_font_glyphs(GFX_CTX *g, GFX_FONT_GLYPHS *glyph);
+
+/*
+ * View port stuff
+ */
+GFX_VIEW *gfx_viewport(GFX_CTX *g, int x, int y, int w, int h,
+	float minimum_x, float minimum_y, float maximum_x, float maximum_y);
+void vp_plot(GFX_VIEW *vp, float x0, float y0, float x1, float y1, GFX_COLOR c);
 
 /* syntactic sugar really */
 #define gfx_get_width(g)	g->width
