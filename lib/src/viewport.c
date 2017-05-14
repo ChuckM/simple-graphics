@@ -16,26 +16,26 @@
  */
 
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h> /* for memset */
 #include <gfx.h>
 
-/* Implement the mapping from viewport to display space */
-#define MAP_X(vp, inX)	(int)((((inX) + (vp)->ox) / (vp)->sx) + (vp->x))
-/* flip Y from 'natural' co-ordinates (+Y goes 'up') to 'display' (+y goes 'down') */
-#define MAP_Y(vp, inY)	(int)((vp->h) - (((inY) + (vp)->oy) / (vp)->sy) + (vp->y))
-
-#if 0
-typedef struct {
-	GFX_CTX		*g;
-	float		sx, sy;		/* X scale and Y scale */
-	float		ox, oy;		/* offset X and offset Y */
-	int			x, y, w, h;	/* box on the screen to use */
-} GFX_VIEW;
-#endif
+/*
+ * return a value between the minimum and maximum value
+ */
+static int
+minmax(int minimum, int a, int maximum)
+{
+	if ((a >= minimum) && (a < maximum)) {
+		return a;
+	} else if (a < minimum) {
+		return minimum;
+	}
+	return maximum;
+}
 
 GFX_VIEW __local_view;
-
 
 /*
  * gfx_viewport( ... )
@@ -56,11 +56,25 @@ gfx_viewport(GFX_CTX *g, int x, int y, int w, int h,
 	res->w = w;
 	res->h = h;
 	
-	res->sx = (max_x - min_x) / (float) w;
-	res->sy = (max_y - min_y) / (float) h;
-	res->ox = -min_x;
-	res->oy = -min_y;
+	/* Set scale for X and scale for Y */
+	res->sx = (float) w / (max_x - min_x);
+	res->sy = (float) h / (max_y - min_y);
+	/* Offsets to move pixels into a 0 - (n+m) space from a -n to +m space */
+	res->min_x = min_x;
+	res->min_y = min_y;
+	res->max_x = max_x;
+	res->max_y = max_y;
 	return &__local_view;
+}
+
+static void
+transform(GFX_VIEW *v, float x_in, float y_in, int *x_out, int *y_out)
+{
+	x_in = (x_in - v->min_x) * v->sx + v->x;
+	/* flip Y co-ordinate "+y is up in viewport, down in display" */
+	y_in = (v->h + v->y) - ((y_in - v->min_y) * v->sy);
+	*x_out = minmax(v->x, x_in, v->x + v->w);
+	*y_out = minmax(v->y, y_in, v->y + v->h);
 }
 
 /*
@@ -72,6 +86,11 @@ gfx_viewport(GFX_CTX *g, int x, int y, int w, int h,
 void
 vp_plot(GFX_VIEW *v, float x0, float y0, float x1, float y1, GFX_COLOR c)
 {
-	gfx_move_to(v->g, MAP_X(v, x0), MAP_Y(v, y0));
-	gfx_draw_line_to(v->g, MAP_X(v, x1), MAP_Y(v, y1), c);
+	int	x, y;
+
+	transform(v, x0, y0, &x, &y);
+	gfx_move_to(v->g, x, y);
+
+	transform(v, x1, y1, &x, &y);
+	gfx_draw_line_to(v->g, x, y, c);
 }

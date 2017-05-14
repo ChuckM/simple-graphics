@@ -221,7 +221,6 @@ __paint_line(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color) {
 		e = mx - my;
 		while (y0 <= y1) {
 			__paint_pixel(g, x0, y0, color);
-			gfx_draw_point(g, color);
 			y0++;
 			e += mx; 
 			if (e > 0) {
