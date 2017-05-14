@@ -82,7 +82,8 @@ typedef struct {
 typedef struct {
 	GFX_CTX		*g;
 	float		sx, sy;		/* X scale and Y scale */
-	float		ox, oy;		/* offset X and offset Y */
+	float		min_x, min_y,
+				max_x, max_y;
 	int			x, y, w, h;	/* box on the screen to use */
 } GFX_VIEW;
 
