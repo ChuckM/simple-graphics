@@ -30,9 +30,10 @@ extern GFX_FONT_GLYPHS tiny_font;
  * sets the display size.
  */
 GFX_CTX *
-gfx_init(void (*pixel_func)(void *, int, int, GFX_COLOR), int width, int height, GFX_FONT font, void *fb)
+gfx_init(GFX_CTX *ctx, void (*pixel_func)(void *, int, int, GFX_COLOR), int width, int height, GFX_FONT font, void *fb)
 {
-	GFX_CTX *res = malloc(sizeof(GFX_CTX)); /* allocate a context */
+	GFX_CTX *res = (ctx == NULL) ? malloc(sizeof(GFX_CTX)) : ctx;
+
 	memset((uint8_t *)res, 0, sizeof(GFX_CTX));
 	res->w			= width;
 	res->h			= height;

@@ -54,7 +54,7 @@ main(int argc, char *argv[]) {
 	GFX_CTX *g;
 	printf("Testing the graphics code\n");
 	
-	g = gfx_init(draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE, (void *)screen);
+	g = gfx_init(NULL, draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE, (void *)screen);
 	if ((argc == 2) && (strncmp(argv[1], "-m", 2) == 0)) {
 		/* 
 	 	 * set mirrored, to graphics are correct when seen

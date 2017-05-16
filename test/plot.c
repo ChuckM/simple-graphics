@@ -56,7 +56,7 @@ main(int argc, char *argv[]) {
 	GFX_VIEW *vp;
 	printf("Testing the graphics viewport code\n");
 	
-	g = gfx_init(draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE, (void *)screen);
+	g = gfx_init(NULL, draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE, (void *)screen);
 	gfx_fill_screen(g, C_BLANK);
 	vp = gfx_viewport(g, 0, 0, SWIDTH, SHEIGHT, 0, -1.0, 2 * M_PI, 1.0);
 	x0 = 0;

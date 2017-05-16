@@ -42,7 +42,7 @@ main(int argc, char *argv[]) {
 
 	printf("Functional Test: Dump Large Font\n");
 	
-	g = gfx_init(draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE, (void *) screen);
+	g = gfx_init(NULL, draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE, (void *) screen);
 	gfx_fill_screen(g, C_BLANK);
 	gfx_set_text_color(g, C_AT, C_BLANK);
 	gfx_set_text_cursor(g, 0, 9);

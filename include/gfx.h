@@ -88,7 +88,7 @@ typedef struct {
 } GFX_VIEW;
 
 /* Utility functions */
-GFX_CTX *gfx_init(void (*draw)(void *, int, int, GFX_COLOR),
+GFX_CTX *gfx_init(GFX_CTX *ctx, void (*draw)(void *, int, int, GFX_COLOR),
 				int width, int height, GFX_FONT size, void *fb);
 
 void gfx_fill_screen(GFX_CTX *g, GFX_COLOR color);
@@ -157,7 +157,7 @@ void gfx_set_font_glyphs(GFX_CTX *g, GFX_FONT_GLYPHS *glyph);
 /*
  * View port stuff
  */
-GFX_VIEW *gfx_viewport(GFX_CTX *g, int x, int y, int w, int h,
+GFX_VIEW *gfx_viewport(GFX_VIEW *v, GFX_CTX *g, int x, int y, int w, int h,
 	float minimum_x, float minimum_y, float maximum_x, float maximum_y);
 void vp_plot(GFX_VIEW *vp, float x0, float y0, float x1, float y1, GFX_COLOR c);
 

@@ -75,7 +75,7 @@ main(int argc, char *argv[]) {
 		}
 	}
 
-	gfx_init(draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE);
+	gfx_init(NULL, draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE);
 	gfx_setRotation(r);
 	printf("New screen height, width is %d, %d\n", gfx_height(), gfx_width());
 	gfx_fillScreen((uint16_t) ' ');

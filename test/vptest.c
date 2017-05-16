@@ -41,8 +41,8 @@ main(int argc, char *argv[])
 	GFX_VIEW *vp;
 	memset(text_screen, ' ', sizeof(text_screen));
 
-	g = gfx_init(draw_pixel, 100, 100, GFX_FONT_TINY, NULL);
-	vp = gfx_viewport(g, 25, 25, 50, 50, -1.0, -1.0, 1.0, 1.0);
+	g = gfx_init(NULL, draw_pixel, 100, 100, GFX_FONT_TINY, NULL);
+	vp = gfx_viewport(NULL, g, 25, 25, 50, 50, -1.0, -1.0, 1.0, 1.0);
 	vp_plot(vp, -.25, -.25, .25, .25, C_STAR);
 	printf("Out of bounds test\n");
 	vp_plot(vp, 0.5, 0, 1.5, 0, C_PLUS);
