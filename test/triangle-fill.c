@@ -48,7 +48,7 @@ main(int argc, char *argv[]) {
 	int x, y;
 	printf("Triangle Fill test.\n");
 	
-	gfx_init(draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE);
+	gfx_init(NULL, draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE);
 	if ((argc == 2) && (strncmp(argv[1], "-m", 2) == 0)) {
 		/* 
 	 	 * set mirrored, to graphics are correct when seen

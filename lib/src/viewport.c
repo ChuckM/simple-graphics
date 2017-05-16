@@ -35,8 +35,6 @@ minmax(int minimum, int a, int maximum)
 	return maximum;
 }
 
-GFX_VIEW __local_view;
-
 /*
  * gfx_viewport( ... )
  *
@@ -45,10 +43,10 @@ GFX_VIEW __local_view;
  * screen.
  */
 GFX_VIEW *
-gfx_viewport(GFX_CTX *g, int x, int y, int w, int h, 
+gfx_viewport(GFX_VIEW *vprt, GFX_CTX *g, int x, int y, int w, int h, 
 	float min_x, float min_y, float max_x, float max_y)
 {
-	GFX_VIEW *res = &__local_view;
+	GFX_VIEW *res = (vprt == NULL) ? malloc(sizeof(GFX_VIEW)) : vprt;
 	memset(res, 0, sizeof(GFX_VIEW));
 	res->g = g;
 	res->x = x;
@@ -64,7 +62,7 @@ gfx_viewport(GFX_CTX *g, int x, int y, int w, int h,
 	res->min_y = min_y;
 	res->max_x = max_x;
 	res->max_y = max_y;
-	return &__local_view;
+	return res;
 }
 
 static void

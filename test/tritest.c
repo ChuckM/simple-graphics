@@ -70,7 +70,7 @@ main(int argc, char *argv[]) {
 	GFX_CTX *g;
 	printf("Triangle Testing\n");
 	
-	g = gfx_init(draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE, (void *)screen);
+	g = gfx_init(NULL, draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE, (void *)screen);
 	if ((argc == 2)) { 
 		mode = atoi(argv[1]);
 	}

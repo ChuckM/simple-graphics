@@ -42,7 +42,7 @@ main(int argc, char *argv[]) {
 
 	printf("Functional Test: Dump Small Font\n");
 	
-	g = gfx_init(draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_SMALL, (void *) screen);
+	g = gfx_init(NULL, draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_SMALL, (void *) screen);
 	gfx_fill_screen(g, C_BLANK);
 	gfx_set_text_color(g, C_AT, C_BLANK);
 	line = -1; /* so that add of height will put it on the baseline */
