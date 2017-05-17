@@ -53,15 +53,8 @@ gfx_viewport(GFX_VIEW *vprt, GFX_CTX *g, int x, int y, int w, int h,
 	res->y = y;
 	res->w = w;
 	res->h = h;
-	
-	/* Set scale for X and scale for Y */
-	res->sx = (float) w / (max_x - min_x);
-	res->sy = (float) h / (max_y - min_y);
-	/* Offsets to move pixels into a 0 - (n+m) space from a -n to +m space */
-	res->min_x = min_x;
-	res->min_y = min_y;
-	res->max_x = max_x;
-	res->max_y = max_y;
+
+	vp_rescale(res, min_x, min_y, max_x, max_y);
 	return res;
 }
 
@@ -91,4 +84,22 @@ vp_plot(GFX_VIEW *v, float x0, float y0, float x1, float y1, GFX_COLOR c)
 
 	transform(v, x1, y1, &x, &y);
 	gfx_draw_line_to(v->g, x, y, c);
+}
+
+/*
+ * vp_rescale( ... )
+ *
+ * Reset the scaling of the passed in viewport.
+ */
+void
+vp_rescale(GFX_VIEW *v, float min_x, float min_y, float max_x, float max_y)
+{
+	/* Set scale for X and scale for Y */
+	v->sx = (float) v->w / (max_x - min_x);
+	v->sy = (float) v->h / (max_y - min_y);
+	/* Offsets to move pixels into a 0 - (n+m) space from a -n to +m space */
+	v->min_x = min_x;
+	v->min_y = min_y;
+	v->max_x = max_x;
+	v->max_y = max_y;
 }
