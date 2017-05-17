@@ -160,6 +160,7 @@ void gfx_set_font_glyphs(GFX_CTX *g, GFX_FONT_GLYPHS *glyph);
 GFX_VIEW *gfx_viewport(GFX_VIEW *v, GFX_CTX *g, int x, int y, int w, int h,
 	float minimum_x, float minimum_y, float maximum_x, float maximum_y);
 void vp_plot(GFX_VIEW *vp, float x0, float y0, float x1, float y1, GFX_COLOR c);
+void vp_rescale(GFX_VIEW *vp, float min_x, float min_y, float max_x, float max_y);
 
 /* syntactic sugar really */
 #define gfx_get_width(g)	g->width
