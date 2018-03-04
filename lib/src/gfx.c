@@ -566,6 +566,19 @@ gfx_draw_line_to(GFX_CTX *g, int x, int y, GFX_COLOR color)
 }
 
 /*
+ * gfx_draw_line_at( ... )
+ *
+ * Draw a line between two points in the display.
+ */
+void
+gfx_draw_line_at(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color)
+{
+	__paint_line(g, x0, y0, x1, y1, color);
+	g->cx = x1;
+	g->cy = y1;
+}
+
+/*
  * gfx_draw_circle( ... )
  *
  * Draw a circle at the current location of radius
