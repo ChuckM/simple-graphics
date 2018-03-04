@@ -107,6 +107,7 @@ void gfx_draw_point_at(GFX_CTX *g, int x, int y, GFX_COLOR color);
 
 void gfx_draw_line(GFX_CTX *g, int x, int y, GFX_COLOR color);
 void gfx_draw_line_to(GFX_CTX *g, int x, int y, GFX_COLOR color);
+void gfx_draw_line_at(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color);
 
 void gfx_draw_rectangle(GFX_CTX *g, int w, int h, GFX_COLOR color);
 void gfx_draw_rectangle_at(GFX_CTX *g, int x, int y, int w, int h, GFX_COLOR color);
