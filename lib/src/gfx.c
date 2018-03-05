@@ -683,8 +683,8 @@ gfx_fill_triangle_at(GFX_CTX *g, int x, int y, int x0, int y0, int x1, int y1, G
 {
 	g->cx = x; g->cy = y;
 	__paint_triangle(g, g->cx, g->cy, 
-						g->cx + x0, g->cy + y0,
-						g->cx + x1, g->cy + y1,  color);
+						x0, y0,
+						x1, y1,  color);
 }
 
 /*
