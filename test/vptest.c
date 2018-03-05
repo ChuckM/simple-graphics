@@ -18,21 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <gfx.h>
-#include "colors.h"
-
-char text_screen[100*100];
-
-void
-draw_pixel(__attribute__((unused)) void *none, int x, int y, GFX_COLOR c)
-{
-	printf("Plot %d, %d - [%d]\n", x, y, c.raw);
-	if ((x > 99) || (y > 99)) {
-		fprintf(stderr, "Pixel [%d, %d] is out of bounds!\n", x, y);
-		exit(1);
-	}
-	text_screen[y*100 + x] = (char) c.raw;
-}
+#include "test.h"
 
 int
 main(int argc, char *argv[])
@@ -48,4 +34,5 @@ main(int argc, char *argv[])
 	vp_plot(vp, 0.5, 0, 1.5, 0, C_PLUS);
 	printf("Axis flipped test\n");
 	vp_plot(vp, 0, 0, 0, 1., C_ONE);
+	print_screen();
 }
