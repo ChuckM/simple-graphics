@@ -35,7 +35,7 @@ main(int argc, char *argv[]) {
 	
 	g = gfx_init(NULL, draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE, (void *)screen);
 	gfx_fill_screen(g, C_BLANK);
-	vp = gfx_viewport(g, 0, 0, SWIDTH, SHEIGHT, 0, -1.0, 2 * M_PI, 1.0);
+	vp = gfx_viewport(NULL, g, 0, 0, SWIDTH, SHEIGHT, 0, -1.0, 2 * M_PI, 1.0);
 	x0 = 0;
 	y0 = sin(0);
 	for (i = 2 * M_PI / 100.0; i < 2 * M_PI; i += 2 * M_PI / 100.0) {
