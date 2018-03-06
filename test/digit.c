@@ -52,25 +52,29 @@ float struct _seg {
  */
 
 #define S2	1.414213562		/* square root of 2 */
-	{
+struct {
+	struct {
+		float c[2];
+	} pt[6];
+} segs[7] =	{
 		{ H_SEG_THICK,		0.0 }, /* abs */
-		{ -H_SEG_THICK,		H_SEG_THICK },
-		{ -H_SEG_THICK,		H_DISP_HEIGHT - H_SEG_THICK - R_SEG_GAP },
-		{ 0,				H_DISP_HEIGHT - R_SEG_GAP },
-		{ H_SEG_THICK,		H_DISP_HEIGHT - H_SEG_THICK - R_SEG_GAP },
+		{ -H_SEG_THICK,		-H_SEG_THICK },
+		{ -H_SEG_THICK,		- ( H_DISP_HEIGHT - H_SEG_THICK - R_SEG_GAP ) },
+		{ 0,				- ( H_DISP_HEIGHT - R_SEG_GAP ) },
+		{ H_SEG_THICK,		- ( H_DISP_HEIGHT - H_SEG_THICK - R_SEG_GAP ) },
 		{ H_SEG_THICK,		0.0}
 	}, {
-		{ H_SEG_THICK,		H_DISP_HEIGHT - 1 + R_SEG_GAP }, /* abs */
-		{ -H_SEG_THICK,		H_SEG_THICK },
-		{ -H_SEG_THICK,		H_DISP_HEIGHT - H_SEG_THICK - R_SEG_GAP },
-		{ 0.0,				H_DISP_HEIGHT - R_SEG_GAP },
-		{ H_SEG_THICK,		H_DISP_HEIGHT - R_SEG_GAP },
-		{ H_SEG_THICK, 		H_SEG_THICK }
+		{ H_SEG_THICK,		- ( H_DISP_HEIGHT + R_SEG_GAP ) }, /* abs */
+		{ -H_SEG_THICK,		- H_SEG_THICK },
+		{ -H_SEG_THICK,		- ( H_DISP_HEIGHT - H_SEG_THICK - R_SEG_GAP ) },
+		{ 0.0,				- ( H_DISP_HEIGHT - R_SEG_GAP ) },
+		{ H_SEG_THICK,		- ( H_DISP_HEIGHT - R_SEG_GAP ) },
+		{ H_SEG_THICK, 		- H_SEG_THICK }
 	}, {
-		{ SEG_THICK + H_SEG_GAP, 						DISP_HEIGHT - 1 }, /* abs */
-		{ DISP_WIDTH - SEG_GAP * 2.0 - SEG_THICK * 2.0,	0.0 },
-		{ DISP_WIDTH - SEG_GAP * 2.0 - SEG_THICK * 2.0,	SEG_THICK },
-		{ 0.0,											SEG_THICK },
+		{ SEG_THICK + H_SEG_GAP, 								DISP_HEIGHT - 1 }, /* abs */
+		{ ( DISP_WIDTH - 1 ) - ( SEG_GAP + SEG_THICK) * 2.0,	0.0 },
+		{ ( DISP_WIDTH - 1 ) - ( SEG_GAP + SEG_THICK) * 2.0,	SEG_THICK },
+		{ 0.0,													SEG_THICK },
 		{ 0, 0},
 		{ 0, 0}
 	}, {
