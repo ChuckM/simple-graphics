@@ -25,7 +25,7 @@ main(int argc, char *argv[])
 {
 	GFX_CTX	*g;
 	GFX_VIEW *vp;
-	memset(text_screen, ' ', sizeof(text_screen));
+	memset(screen, ' ', sizeof(screen));
 
 	g = gfx_init(NULL, draw_pixel, 100, 100, GFX_FONT_TINY, NULL);
 	vp = gfx_viewport(NULL, g, 25, 25, 50, 50, -1.0, -1.0, 1.0, 1.0);
