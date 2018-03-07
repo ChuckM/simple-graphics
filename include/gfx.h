@@ -108,6 +108,7 @@ void gfx_draw_point_at(GFX_CTX *g, int x, int y, GFX_COLOR color);
 void gfx_draw_line(GFX_CTX *g, int x, int y, GFX_COLOR color);
 void gfx_draw_line_to(GFX_CTX *g, int x, int y, GFX_COLOR color);
 void gfx_draw_line_at(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color);
+void gfx_draw_line_abs(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color);
 
 void gfx_draw_rectangle(GFX_CTX *g, int w, int h, GFX_COLOR color);
 void gfx_draw_rectangle_at(GFX_CTX *g, int x, int y, int w, int h, GFX_COLOR color);
@@ -129,9 +130,12 @@ void gfx_fill_circle_at(GFX_CTX *g, int x, int y, int r, GFX_COLOR color);
 
 void gfx_draw_triangle(GFX_CTX *g, int ax, int ay, int bx, int by, GFX_COLOR c);
 void gfx_draw_triangle_at(GFX_CTX *g, int x, int y, int ax, int ay, int bx, int by, GFX_COLOR c);
+void gfx_draw_triangle_abs(GFX_CTX *g, int x, int y, int ax, int ay, int bx, int by, GFX_COLOR c);
 
 void gfx_fill_triangle(GFX_CTX *g, int ax, int ay, int bx, int by, GFX_COLOR c);
 void gfx_fill_triangle_at(GFX_CTX *g, int x, int y, int ax, int ay, int bx, int by, GFX_COLOR c);
+void gfx_fill_triangle_abs(GFX_CTX *g, int x0, int y0, int x1, int y1,
+										int x2, int y2, GFX_COLOR c);
 
 
 /*
