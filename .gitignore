@@ -4,4 +4,7 @@ test/basic
 test/large-font
 test/small-font
 test/rotation
-.*
+test/plot
+test/rectest
+test/tiny-font
+test/tritest
