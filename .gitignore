@@ -7,4 +7,5 @@ test/rotation
 test/plot
 test/rectest
 test/tiny-font
+test/vptest
 test/tritest
