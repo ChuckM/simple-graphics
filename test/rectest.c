@@ -11,31 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "gfx.h"
-#include "colors.h"
-
-#define SWIDTH	100 
-#define SHEIGHT	60
-
-uint8_t screen[SWIDTH * SHEIGHT];
-
-void
-draw_pixel(void *fb, int x, int y, GFX_COLOR color) {
-	uint8_t *s = fb;
-	*(s + y*SWIDTH + x) = color.raw & 0xff;
-}
-
-/* print out the screen contents */
-void print_screen(void) {
-	int i, j;
-	for (i = 0; i < SHEIGHT; i++) {
-		for (j = 0; j < SWIDTH; j++) {
-			printf("%c", (char) screen[i*SWIDTH + j]);
-		}
-		printf("\n");
-	}
-}
-
+#include "test.h"
 
 /*
  * Run through the basic operations of the graphics library
@@ -48,7 +24,7 @@ main(int argc, char *argv[]) {
 	GFX_CTX *g;
 	printf("Triangle Testing\n");
 	
-	g = gfx_init(draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE, (void *)screen);
+	g = gfx_init(NULL, draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE, (void *)screen);
 	if ((argc == 2)) { 
 		mode = atoi(argv[1]);
 	}

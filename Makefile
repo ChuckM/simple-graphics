@@ -24,7 +24,11 @@ AR=arm-none-eabi-ar
 CFLAGS += -mthumb -mcpu=cortex-m4 
 CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 
-CFLAGS += -Os -g -I./include 
+# debug
+#CFLAGS += -O0 -g -I./include 
+
+# release
+CFLAGS += -Os -I./include 
 
 all: lib/libgfx.a
 

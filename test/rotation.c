@@ -16,35 +16,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "gfx.h"
-
-#define SWIDTH 100
-#define SHEIGHT 60 
-
-uint8_t screen[SWIDTH * SHEIGHT];
-
-void
-draw_pixel(int x, int y, uint16_t color) {
-	if (x >= SWIDTH) {
-//		printf("Pixel map failure? got pixel %d for x\n", x);
-		return;
-	}
-	if (y >= SHEIGHT) {
-//		printf("Pixel map failure? got pixel %d for y\n", y);
-		return;
-	}
-	screen[y*SWIDTH + x] = color & 0xff;
-}
-
-void print_screen(void) {
-	int i, j;
-	for (i = 0; i < SHEIGHT; i++) {
-		for (j = 0; j < SWIDTH; j++) {
-			printf("%c", (char) screen[i*SWIDTH + j]);
-		}
-		printf("\n");
-	}
-}
+#include "test.h"
 
 int
 main(int argc, char *argv[]) {
@@ -74,11 +46,11 @@ main(int argc, char *argv[]) {
 		}
 	}
 
-	gfx_init(draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE);
+	gfx_init(NULL, draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE);
 	gfx_setRotation(r);
 	printf("New screen height, width is %d, %d\n", gfx_height(), gfx_width());
-	gfx_fillScreen((uint16_t) ' ');
-	gfx_setTextColor((uint16_t) '@', (uint16_t) ' ');
+	gfx_fillScreen(C_SPACE);
+	gfx_setTextColor(C_AT, C_SPACE);
 	gfx_setCursor(5, 15);
 	gfx_setTextRotation(GFX_ROT_0);
 	gfx_puts("Rotation ");
@@ -89,8 +61,8 @@ main(int argc, char *argv[]) {
 	gfx_setTextRotation(GFX_ROT_270);
 	gfx_puts("eh?");
 	gfx_setTextRotation(GFX_ROT_0);
-	gfx_drawRoundRect(28,20, 34, 11, 3, (uint16_t) '-');
-	gfx_setTextColor((uint16_t) '*', (uint16_t) '*');
+	gfx_drawRoundRect(28,20, 34, 11, 3, C_DASH);
+	gfx_setTextColor(C_STAR, C_STAR);
 	gfx_setCursor(34, 30);
 	gfx_puts("Up\034");
 

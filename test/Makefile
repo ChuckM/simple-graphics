@@ -14,13 +14,15 @@
 # view the results. 
 #
 #TESTS= basic rotation large-font small-font triangle-fill tiny-font
-TESTS= basic tritest rottest rectest chartst large-font small-font tiny-font plot
+TESTS= vptest basic tritest rottest rectest chartst large-font small-font tiny-font plot
 
-CFLAGS= -g -I ../include 
+CFLAGS= -g -O0 -I ../include 
 LDFLAGS= -L ../lib
 LDLIBS= -lgfx -lm
 
 all:	$(TESTS)
+
+vptest: ../lib/libgfx.a
 
 basic:	../lib/libgfx.a
 

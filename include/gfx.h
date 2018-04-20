@@ -82,12 +82,13 @@ typedef struct {
 typedef struct {
 	GFX_CTX		*g;
 	float		sx, sy;		/* X scale and Y scale */
-	float		ox, oy;		/* offset X and offset Y */
+	float		min_x, min_y,
+				max_x, max_y;
 	int			x, y, w, h;	/* box on the screen to use */
 } GFX_VIEW;
 
 /* Utility functions */
-GFX_CTX *gfx_init(void (*draw)(void *, int, int, GFX_COLOR),
+GFX_CTX *gfx_init(GFX_CTX *ctx, void (*draw)(void *, int, int, GFX_COLOR),
 				int width, int height, GFX_FONT size, void *fb);
 
 void gfx_fill_screen(GFX_CTX *g, GFX_COLOR color);
@@ -106,6 +107,8 @@ void gfx_draw_point_at(GFX_CTX *g, int x, int y, GFX_COLOR color);
 
 void gfx_draw_line(GFX_CTX *g, int x, int y, GFX_COLOR color);
 void gfx_draw_line_to(GFX_CTX *g, int x, int y, GFX_COLOR color);
+void gfx_draw_line_at(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color);
+void gfx_draw_line_abs(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color);
 
 void gfx_draw_rectangle(GFX_CTX *g, int w, int h, GFX_COLOR color);
 void gfx_draw_rectangle_at(GFX_CTX *g, int x, int y, int w, int h, GFX_COLOR color);
@@ -127,9 +130,12 @@ void gfx_fill_circle_at(GFX_CTX *g, int x, int y, int r, GFX_COLOR color);
 
 void gfx_draw_triangle(GFX_CTX *g, int ax, int ay, int bx, int by, GFX_COLOR c);
 void gfx_draw_triangle_at(GFX_CTX *g, int x, int y, int ax, int ay, int bx, int by, GFX_COLOR c);
+void gfx_draw_triangle_abs(GFX_CTX *g, int x, int y, int ax, int ay, int bx, int by, GFX_COLOR c);
 
 void gfx_fill_triangle(GFX_CTX *g, int ax, int ay, int bx, int by, GFX_COLOR c);
 void gfx_fill_triangle_at(GFX_CTX *g, int x, int y, int ax, int ay, int bx, int by, GFX_COLOR c);
+void gfx_fill_triangle_abs(GFX_CTX *g, int x0, int y0, int x1, int y1,
+										int x2, int y2, GFX_COLOR c);
 
 
 /*
@@ -156,9 +162,10 @@ void gfx_set_font_glyphs(GFX_CTX *g, GFX_FONT_GLYPHS *glyph);
 /*
  * View port stuff
  */
-GFX_VIEW *gfx_viewport(GFX_CTX *g, int x, int y, int w, int h,
+GFX_VIEW *gfx_viewport(GFX_VIEW *v, GFX_CTX *g, int x, int y, int w, int h,
 	float minimum_x, float minimum_y, float maximum_x, float maximum_y);
 void vp_plot(GFX_VIEW *vp, float x0, float y0, float x1, float y1, GFX_COLOR c);
+void vp_rescale(GFX_VIEW *vp, float min_x, float min_y, float max_x, float max_y);
 
 /* syntactic sugar really */
 #define gfx_get_width(g)	g->width

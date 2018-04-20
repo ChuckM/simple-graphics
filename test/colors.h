@@ -1,8 +1,14 @@
 /*
- * colors.h
+ * tests.h
  *
  * Defines some letters as 'colors' for the test
  * programs to use.
+ *
+ * Declare a screen buffer
+ *
+ * Declare a pixel drawing function for the buffer.
+ *
+ * Declare a screen printing function.
  */
 #pragma once
 #include <gfx.h>

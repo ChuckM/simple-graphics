@@ -16,28 +16,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
-#include "gfx.h"
 
-#define SWIDTH 100
-#define SHEIGHT 60 
-
-uint8_t screen[SWIDTH * SHEIGHT];
-
-void
-draw_pixel(int x, int y, uint16_t color) {
-	screen[y*SWIDTH + x] = color & 0xff;
-}
-
-/* print out the screen contents */
-void print_screen(void) {
-	int i, j;
-	for (i = 0; i < SHEIGHT; i++) {
-		for (j = 0; j < SWIDTH; j++) {
-			printf("%c", (char) screen[i*SWIDTH + j]);
-		}
-		printf("\n");
-	}
-}
+#include "test.h"
 
 /*
  * Test code
@@ -48,7 +28,7 @@ main(int argc, char *argv[]) {
 	int x, y;
 	printf("Triangle Fill test.\n");
 	
-	gfx_init(draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE);
+	gfx_init(NULL, draw_pixel, SWIDTH, SHEIGHT, GFX_FONT_LARGE);
 	if ((argc == 2) && (strncmp(argv[1], "-m", 2) == 0)) {
 		/* 
 	 	 * set mirrored, to graphics are correct when seen

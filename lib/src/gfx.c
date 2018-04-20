@@ -30,9 +30,10 @@ extern GFX_FONT_GLYPHS tiny_font;
  * sets the display size.
  */
 GFX_CTX *
-gfx_init(void (*pixel_func)(void *, int, int, GFX_COLOR), int width, int height, GFX_FONT font, void *fb)
+gfx_init(GFX_CTX *ctx, void (*pixel_func)(void *, int, int, GFX_COLOR), int width, int height, GFX_FONT font, void *fb)
 {
-	GFX_CTX *res = malloc(sizeof(GFX_CTX)); /* allocate a context */
+	GFX_CTX *res = (ctx == NULL) ? malloc(sizeof(GFX_CTX)) : ctx;
+
 	memset((uint8_t *)res, 0, sizeof(GFX_CTX));
 	res->w			= width;
 	res->h			= height;
@@ -221,7 +222,6 @@ __paint_line(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color) {
 		e = mx - my;
 		while (y0 <= y1) {
 			__paint_pixel(g, x0, y0, color);
-			gfx_draw_point(g, color);
 			y0++;
 			e += mx; 
 			if (e > 0) {
@@ -566,6 +566,30 @@ gfx_draw_line_to(GFX_CTX *g, int x, int y, GFX_COLOR color)
 }
 
 /*
+ * gfx_draw_line_at( ... )
+ *
+ * Draw a line between two points in the display.
+ */
+void
+gfx_draw_line_at(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color)
+{
+	__paint_line(g, x0, y0, x1, y1, color);
+	g->cx = x1;
+	g->cy = y1;
+}
+
+/*
+ * gfx_draw_line_abs( ... )
+ *
+ * Draw a line at position x0,y0 -> x1, y1 without affecting cursor.
+ */
+void
+gfx_draw_line_abs(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color)
+{
+	__paint_line(g, x0, y0, x1, y1, color);
+}
+
+/*
  * gfx_draw_circle( ... )
  *
  * Draw a circle at the current location of radius
@@ -652,6 +676,22 @@ gfx_draw_triangle_at(GFX_CTX *g, int x, int y, int x0, int y0, int x1, int y1, G
 }
 
 /*
+ * gfx_draw_triangle_abs( ... )
+ * 
+ * Draw a triangle, given fixed co-ordinates in space.
+ * location which does not change. 
+ */
+void
+gfx_draw_triangle_abs(GFX_CTX *g, int x0, int y0,
+								 int x1, int y1, int x2, int y2, GFX_COLOR color)
+{
+	__paint_line(g, x0, y0, x1, y1, color);
+	__paint_line(g, x1, y1, x2, y2, color);
+	__paint_line(g, x2, y2, x0, y0, color);
+}
+
+
+/*
  * gfx_fill_triangle( ... )
  * 
  * Draw a filled triangle, the starting point is the current 
@@ -665,13 +705,37 @@ gfx_fill_triangle(GFX_CTX *g, int x0, int y0, int x1, int y1, GFX_COLOR color)
 						g->cx + x1, g->cy + y1,  color);
 }
 
+/*
+ * gfx_fill_triangle_at( ... )
+ *
+ * Combine a move and a triangle, so move the current GFX cursor
+ * to X, Y, and fill a triangle between (x, y), (x + x0, y + y0),
+ * (x + x1, x + y1)
+ */
 void
-gfx_fill_triangle_at(GFX_CTX *g, int x, int y, int x0, int y0, int x1, int y1, GFX_COLOR color)
+gfx_fill_triangle_at(GFX_CTX *g, int x, int y, 
+								 int x0, int y0, int x1, int y1, GFX_COLOR color)
 {
 	g->cx = x; g->cy = y;
 	__paint_triangle(g, g->cx, g->cy, 
 						g->cx + x0, g->cy + y0,
 						g->cx + x1, g->cy + y1,  color);
+}
+
+/*
+ * gfx_fill_triangle_abs( ... )
+ *
+ * Fill a triangle at an absolute position on the screen. The GFX cursor is
+ * unaffected and unused. Triangle is (x0,y0), (x1, y1), (x2, y2)
+ */
+void
+gfx_fill_triangle_abs(GFX_CTX *g, int x0, int y0,
+								  int x1, int y1,
+								  int x2, int y2, GFX_COLOR color)
+{
+	__paint_triangle(g, x0, y0,
+						x1, y1,
+						x2, y2,  color);
 }
 
 /*
