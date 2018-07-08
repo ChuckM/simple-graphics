@@ -159,6 +159,11 @@ GFX_FONT gfx_set_font(GFX_CTX *g, GFX_FONT size);
 void gfx_draw_glyph(GFX_CTX *g, uint8_t c, GFX_COLOR fg, GFX_COLOR bg);
 void gfx_set_font_glyphs(GFX_CTX *g, GFX_FONT_GLYPHS *glyph);
 
+#define GFX_OOBREPORT	0x1
+
+void gfx_set(GFX_CTX *g, uint32_t flag);
+void gfx_clear(GFX_CTX *g, uint32_t flag);
+
 /*
  * View port stuff
  */

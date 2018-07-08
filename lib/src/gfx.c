@@ -24,6 +24,17 @@ extern GFX_FONT_GLYPHS small_font;
 extern GFX_FONT_GLYPHS large_font;
 extern GFX_FONT_GLYPHS tiny_font;
 
+void
+gfx_set(GFX_CTX *g, uint32_t flag)
+{
+	g->flags |= flag;
+}
+
+void
+gfx_clear(GFX_CTX *g, uint32_t flag)
+{
+	g->flags = (g->flags & ~(flag));
+}
 
 /*
  * Must be called first. Sets up the graphics context and
@@ -71,6 +82,7 @@ gfx_init(GFX_CTX *ctx, void (*pixel_func)(void *, int, int, GFX_COLOR), int widt
 
 #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
 
+#define NOTRANSFORM
 
 /*
  * Architectural note: the __paint_xxx functions
@@ -95,10 +107,14 @@ static void
 __paint_pixel(GFX_CTX *gfx, int x, int y, GFX_COLOR color)
 {
 	int xt, yt; 	/* transformed versions */
+	int save[2];
+	save[0] = x;
+	save[1] = y;
 	/*
 	 * Transform the co-ordinates from user space
 	 * into display space.
 	 */
+#ifdef NOTRANSFORM
 	/* translate to the rotation center */
 	x -= gfx->cr.x;
 	y -= gfx->cr.y;
@@ -108,10 +124,14 @@ __paint_pixel(GFX_CTX *gfx, int x, int y, GFX_COLOR color)
 	/* translate back in the real world */
 	x = xt + gfx->cr.x;
 	y = yt + gfx->cr.y;
+#endif
 
 	/* now clip to the screen's actual size */
 	if ((x < 0) || (x >= gfx->w) ||
 	    (y < 0) || (y >= gfx->h)) {
+		if (gfx->flags & GFX_OOBREPORT) {
+			printf("Pixel [%d, %d] => [%d, %d] is out of bounds\n", save[0], save[1], x, y);
+		}
 		return; // off screen so don't draw it
 	}
 
