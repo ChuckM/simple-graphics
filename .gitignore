@@ -9,3 +9,5 @@ test/rectest
 test/tiny-font
 test/vptest
 test/tritest
+test/chartst
+test/rottest
