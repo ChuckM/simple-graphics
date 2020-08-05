@@ -13,13 +13,28 @@
 # have your X term wider than 96 characters to
 # view the results. 
 #
-TESTS= basic rotation large-font small-font triangle-fill tiny-font
+#TESTS= basic rotation large-font small-font triangle-fill tiny-font
+TESTS= digit vptest basic tritest rottest rectest chartst large-font small-font tiny-font plot
 
-CFLAGS= -g -I ../include 
+CFLAGS= -g -O0 -I ../include 
 LDFLAGS= -L ../lib
-LDLIBS= -lgfx
+LDLIBS= -lgfx -lm
 
 all:	$(TESTS)
+
+vptest: ../lib/libgfx.a
+
+basic:	../lib/libgfx.a
+
+tritest: ../lib/libgfx.a
+
+rottest: ../lib/libgfx.a
+
+rectest: ../lib/libgfx.a
+
+chartst: ../lib/libgfx.a
+
+digit: ../lib/libgfx.a
 
 clean:
 	rm -f $(TESTS)

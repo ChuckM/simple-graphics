@@ -1,5 +1,5 @@
-Functional Tests
-----------------
+Tests and Examples
+------------------
 
 This directory contains some functional tests for the graphics
 routines. Since wiring up an actual display can be time consuming
@@ -11,6 +11,37 @@ At the end of each test the display buffer is sent to the standard
 output and displays on your screen. If you're using an xterm or other
 soft terminal screen then set the width to at least 100 characters
 so that the terminal application isn't wrapping lines.
+
+**demo.c**
+
+> This is a basic test of a number of different functions.
+> It creates the 'demo scene' which is also in the repo
+> as `demo.output`. 
+
+**colors.h**
+
+> My fake colors file, it is the characters for
+> 0-9,A-F and some punctuation. WIth `#define` names
+> for common punctuation like `C_BLANK` for the space
+> character or `C_STAR` for the asterisk.
+
+## Functional Tests
+
+### Font Dumps
+
+**large-font.c**
+
+> Dumps glyphs 0 - 127 of the "large" (8 x 12) font.
+
+**small-font.c**
+
+> Dumps glyphs 0 - 127 of the "small" (6 x 8) font.
+
+**tiny-font.c**
+
+> Dumps glyphs 0 - 127 of the "tiny" (4 x 6) font.
+
+### API Tests
 
 **basic.c**
 

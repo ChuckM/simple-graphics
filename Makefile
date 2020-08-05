@@ -24,14 +24,19 @@ AR=arm-none-eabi-ar
 CFLAGS += -mthumb -mcpu=cortex-m4 
 CFLAGS += -mfloat-abi=hard -mfpu=fpv4-sp-d16
 
-CFLAGS += -Os -g -I./include 
+# debug
+#CFLAGS += -O0 -g -I./include 
+
+# release
+CFLAGS += -Os -I./include 
 
 all: lib/libgfx.a
 
-lib/libgfx.a: obj lib/src/gfx.c lib/src/fonts.c include/gfx.h
+lib/libgfx.a: obj lib/src/gfx.c lib/src/viewport.c lib/src/fonts.c include/gfx.h
 	$(CC) $(CFLAGS) -g -c lib/src/gfx.c -I ./include -o obj/gfx.o
 	$(CC) $(CFLAGS) -g -c lib/src/fonts.c -I ./include -o obj/fonts.o
-	$(AR) -rv -o lib/libgfx.a obj/gfx.o obj/fonts.o
+	$(CC) $(CFLAGS) -g -c lib/src/viewport.c -I ./include -o obj/viewport.o
+	$(AR) -rv -o lib/libgfx.a obj/gfx.o obj/fonts.o obj/viewport.o
 
 obj:
 	mkdir ./obj

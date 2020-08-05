@@ -291,7 +291,7 @@ static const uint8_t __small_font[] = {
 	0x00, 0x00, 0x00, 0x00, 0x00 	 
 };
 
-struct gfx_font small_font = {
+GFX_FONT_GLYPHS small_font = {
 	__small_font,
 	254,
 	5,
@@ -457,7 +457,7 @@ static const uint8_t __large_font[] = {
 	0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f, 0x7f	// 127
 };
 
-struct gfx_font large_font = {
+GFX_FONT_GLYPHS large_font = {
 	__large_font,
 	128,
 	9,
@@ -603,7 +603,7 @@ static const uint8_t __tiny_font[] = {
 	0x3e, 0x3e, 0x3e, 0x0	/* 0x7f <DEL> */
 };
 
-struct gfx_font tiny_font = {
+GFX_FONT_GLYPHS tiny_font = {
 	__tiny_font,
 	128,
 	4,
