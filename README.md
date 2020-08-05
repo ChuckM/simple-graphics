@@ -35,7 +35,7 @@ capabilities are provided:
 
 ## One Page API Reference
 
-The useful API calls in a single, easy to use reference.
+The most useful API calls in a single, easy to use reference.
 
 ### Utility
   * `gfx_init(draw_pixel, width, height, font_spec)` -- This must be
