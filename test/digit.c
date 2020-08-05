@@ -319,8 +319,15 @@ void print_digit(int n);
 void
 digit_draw_pixel(void *fb, int x, int y, GFX_COLOR color)
 {
+	uint32_t	t1, t2;
 	struct digit_fb *digit = (struct digit_fb *)(fb);
 	uint8_t	c = (uint8_t) color.raw;
+	t1 = (uint32_t)(digit->data);
+	t2 = y * digit->w + x;
+	if (t2 >= 6600) {
+		printf("Error.\n");
+		while(1);
+	}
 	*((digit->data + (y * digit->w)) + x) = c;
 }
 
@@ -344,7 +351,6 @@ print_digit(int n) {
 			row++;
 		}
 		printf("\n");
-		row += digit->w;
 	}
 	/* END DEBUG CODE */
 }
