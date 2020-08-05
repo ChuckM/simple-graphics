@@ -88,6 +88,8 @@ to an absolute co-ordinate using `gfx_move_to` (draw cursor) or
 	the display to mirrored mode (x axis is reversed). If `flag` is 0
 	it will reset mirrored mode. This is useful when your
 	display is being mirrored first as in a heads up display.
+  * `gfx_get_mirrored(GFX_CTX *ctx)` -- Returns mirroring options currently
+    in effect.
   * `gfx_move(GFX_CTX, int x, int y)` -- Move the drawing cursor without
     drawing from where it was, to where it was +x, +y.
   * `gfx_move_to(GFX_CTX, int x, int y)` -- Move the drawing cursor to
@@ -148,37 +150,45 @@ to an absolute co-ordinate using `gfx_move_to` (draw cursor) or
 	The drawing cursor is updated to (x, y).
 
 ### Text
-  * `gfx_setTextColor(FGColor, BGColor)` -- Set the foreground and
+  * `gfx_set_text_color(GFX_CTX *ctx, FGColor, BGColor)` -- Set the foreground and
 	background colors for text. If `BGColor` is zero then the 
     background is unchanged. Use a background color of 0x1 to write
     black as the background color.
-  * `gfx_setFont(FontSpec)` -- You can switch between the large and
+  * `gfx_set_font(GFX_CTX *ctx, FontSpec)` -- You can switch between the large and
     the small font.
-  * `gfx_puts(message)` -- Writes the message to the screen at the
+  * `gfx_puts(GFX_CTX *ctx, message)` -- Writes the message to the screen at the
 	current cursor location, moving the cursor right by one text
 	box for each character. Will drop down one line and return to
 	the left most co-ordinate from `gfx_setCursor` if wrapping is
 	enabled.
-  * `gfx_putc(c)` -- Writes a character on the screen and advances
+  * `gfx_putc(GFX_CTX *ctx, c)` -- Writes a character on the screen and advances
 	the co-ordinates in the text cursor by one text box position.
-  * `gfx_textSize(size)` -- Applies an integer scaling value to all
+  * `gfx_text_size(GFX_CTX *ctx, size)` -- Applies an integer scaling value to all
     future text. No anti-aliasing is done, just big blocky letters.
-  * `gfx_textWrap(on/off)` -- Sets text wrapping on or off, when
+  * `gfx_text_wrap(GFX_CTX *ctx, on/off)` -- Sets text wrapping on or off, when
     it is off text off screen is simply clipped and discarded.
-  * `gfx_getTextHeight()` -- Returns the height of text so you can
+  * `gfx_get_text_height(GFX_CTX *ctx)` -- Returns the height of text so you can
     move to the next line down by adding this value to your Y
 	co-ordinate.
-  * `gfx_getTextWidth()` -- Returns the size of a text box which
+  * `gfx_get_text_width(GFX_CTX *ctx)` -- Returns the size of a text box which
 	lets you compute how wide a string will be when printed by
 	multiplying this value by its length.
-  * `gfx_setCursor(x0, y0)` -- Sets the text cursor to the indicated
+  * `gfx_set_cursor(GFX_CTX *, x0, y0)` -- Sets the text cursor to the indicated
 	co-ordinates. This should be the bottom left corner of the text
 	box.
-  * `gfx_textRotate(rotation)` -- Allows text to be rotated to one
+  * `gfx_text_rotate(GFX_CTX *ctx, rotation)` -- Allows text to be rotated to one
 	of four directions, 0 (normal), 90 straight down with the top
 	of the text to the right, 180 upside down and right to left,
 	and 270 which is straight up with the top of the text pointed
 	left.
+  * `gfx_get_text_baseline(GFX_CTX *ctx)` -- Returns the baseline for text
+    which is the line the characters sit on, as opposed to the characters
+    lowest extent.
+  * `gfx_get_string_width(GFX_CTX *ctx, char *str)` -- Compute the length
+    of the string in pixels based on the text to be displayed. This lets you
+    justify/center text in boxes, etc.
+  * `gfx_get_font(GFX_CTX *ctx)` -- Returns the current font set.
+ 
 
 ### View Ports
   * `GFX_VIEW *gfx_viewport(GFX_CTX *g, x, y, w, h, min_x, min_y, max_x, max_y)` --
@@ -240,3 +250,11 @@ on the EGA 16 color palette.
 #define GFX_COLOR_YELLOW	(GFX_COLOR){.c={0x55, 0xff, 0xff, 0xff}}
 #define GFX_COLOR_LTYELLOW	(GFX_COLOR){.c={0xaa, 0xff, 0xff, 0xff}}
 ```
+
+### Font Defines
+
+There are three fonts defined;
+  * `GFX_FONT_TINY` -- this is a 4x6 font for very low res displays.
+  * `GFX_FONT_SMALL` -- This is a 5x7 font for common graphic LCD displays.
+  * `GFX_FONT_LARGE` -- This is a 7x12 font for larger displays.
+
