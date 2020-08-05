@@ -319,10 +319,9 @@ void print_digit(int n);
 void
 digit_draw_pixel(void *fb, int x, int y, GFX_COLOR color)
 {
-	uint32_t	t1, t2;
+	uint32_t	t2;
 	struct digit_fb *digit = (struct digit_fb *)(fb);
 	uint8_t	c = (uint8_t) color.raw;
-	t1 = (uint32_t)(digit->data);
 	t2 = y * digit->w + x;
 	if (t2 >= 6600) {
 		printf("Error.\n");
@@ -383,8 +382,8 @@ generate_digits(void)
 		digits[i].w = w;
 		digits[i].h = h;
 		digits[i].data = calloc(w * h, sizeof(uint8_t));
-		printf("Digit %d, bmp allocated 0x%0X, length %d\n",
-				i, digits[i].data, w*h);
+		printf("Digit %d, bmp allocated 0x%0lx, length %d\n",
+				i, (size_t) (digits[i].data), w*h);
 		g = gfx_init(NULL, digit_draw_pixel, w, h,
 					   GFX_FONT_LARGE, (void *)&digits[i]);
 		gfx_fill_screen(g, C_BLANK);
